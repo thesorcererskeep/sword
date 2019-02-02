@@ -35,25 +35,34 @@ int con_init(lua_State *L) {
 }
 
 int con_print(lua_State *L) {
+  /* Get number of args */
   int c = lua_gettop(L);
+  if (c < 1) {
+    printf("\n");
+    return 0;
+  }
   //printf("## c = %d\n", c);
+  /* Print first arg */
   const char* s = luaL_checklstring(L, 1, NULL);
   if (s == NULL) {
-    //printf("");
+    printf("");
   } else {
     printf("%s", s);
   }
 
+  /* Space remaining args with tabs */
   if (c > 1) {
     for (int i = 1; i < c; i++) {
       s = luaL_checklstring(L, i+1, NULL);
       if (s == NULL) {
-        //printf("");
+        printf("");
       } else {
         printf("\t%s", s);
       }
     }
   }
+
+  /* Print final newline */
   printf("\n");
   return 0;
 }
