@@ -27,12 +27,34 @@ int con_init(lua_State *L) {
   lua_createtable(L, 0, 0);
   lua_pushcfunction(L, con_read_line);
   lua_setfield(L, -2, "read_line");
+  lua_pushcfunction(L, con_print);
+  lua_setfield(L, -2, "print");
   lua_setglobal(L, "console");
 
   return EXIT_SUCCESS;
 }
 
 int con_print(lua_State *L) {
+  int c = lua_gettop(L);
+  //printf("## c = %d\n", c);
+  const char* s = luaL_checklstring(L, 1, NULL);
+  if (s == NULL) {
+    //printf("");
+  } else {
+    printf("%s", s);
+  }
+
+  if (c > 1) {
+    for (int i = 1; i < c; i++) {
+      s = luaL_checklstring(L, i+1, NULL);
+      if (s == NULL) {
+        //printf("");
+      } else {
+        printf("\t%s", s);
+      }
+    }
+  }
+  printf("\n");
   return 0;
 }
 
