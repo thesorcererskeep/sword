@@ -8,7 +8,7 @@
 #include "lauxlib.h"
 #include "lualib.h"
 
-void lua_error (lua_State *L, const char *format, ...) {
+void l_error (lua_State *L, const char *format, ...) {
   va_list argp;
   va_start(argp, format);
   vfprintf(stderr, format, argp);

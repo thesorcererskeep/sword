@@ -5,7 +5,7 @@
  * Prints Lua error message and exits the game.
  */
  /* Handle Lua errors */
-void lua_error (lua_State *L, const char *format, ...);
+void l_error (lua_State *L, const char *format, ...);
 
 /**
  * Prints a string to stdout.
