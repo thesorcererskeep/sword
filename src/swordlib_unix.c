@@ -1,8 +1,21 @@
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 #include <readline/readline.h>
 
 #include "lua.h"
 #include "lauxlib.h"
 #include "lualib.h"
+
+void lua_error (lua_State *L, const char *format, ...) {
+  va_list argp;
+  va_start(argp, format);
+  vfprintf(stderr, format, argp);
+  va_end(argp);
+  lua_close(L);
+  exit(EXIT_FAILURE);
+}
 
 /**
  * Prints a string to stdout.
