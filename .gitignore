@@ -54,3 +54,7 @@ dkms.conf
 # Swords & Sorcery Files
 bin/
 bin/*
+inc/
+inc/*
+lib/
+lib/*
