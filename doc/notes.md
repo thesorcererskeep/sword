@@ -43,3 +43,26 @@
 * restart
 * verbose
 * log
+
+## Directory Structure
+/bin
+  sword
+  /sorcery
+    startup.cfg
+    /scripts
+      parser.lua
+      filesystem.lua
+      world.lua
+      library.lua
+    /adventures
+      /adventure-title
+        manifest.lua
+        main.lua
+          /scripts
+            commands.lua
+          /data
+            rooms.dat
+            monsters.dat
+            items.dat
+      /adventure-title-2
+        ...
