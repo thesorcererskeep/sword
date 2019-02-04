@@ -8,19 +8,15 @@
 #include "sword.h"
 #include "swordlib.h"
 
-static void print_version(void) {
-  printf("%s v%s\n", SWORD_TITLE, SWORD_VERSION);
-  printf("%s\n", SWORD_TAGLINE);
-  printf("© %s %s\n", SWORD_YEAR, SWORD_AUTHOR);
-}
+static lua_State *L = NULL;
+
+static void print_version(void);
+static void init(void);
+static void shutdown(void);
 
 int main(int argv, char* argc[]) {
   print_version();
-
-  /* Set console title */
-  sw_con_set_title(SWORD_TITLE);
-
-  lua_State *L = luaL_newstate();
+  init();
   luaL_openlibs(L);
   sw_openlibs(L);
   sw_set_scripts_path(L, SWORD_SCRIPTS_PATH);
@@ -29,6 +25,27 @@ int main(int argv, char* argc[]) {
   if (err) {
      sw_error(L, "%s\n", lua_tostring(L, -1));
   }
-  lua_close(L);
   return EXIT_SUCCESS;
+}
+
+static void print_version(void) {
+  printf("%s v%s\n", SWORD_TITLE, SWORD_VERSION);
+  printf("%s\n", SWORD_TAGLINE);
+  printf("© %s %s\n", SWORD_YEAR, SWORD_AUTHOR);
+}
+
+static void init(void) {
+  /* Set console title */
+  sw_con_set_title(SWORD_TITLE);
+
+  /* Initialize  Lua */
+  L = luaL_newstate();
+
+  atexit(shutdown);
+}
+
+static void shutdown(void) {
+  /* Reset title and close down Lua */
+  sw_con_set_title("");
+  lua_close(L);
 }
