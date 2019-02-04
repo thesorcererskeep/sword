@@ -4,7 +4,7 @@
 #define SWORD_PROMPT ">"
 #define SWORD_DELIMITERS " \r\n\t"
 #define SWORD_MAX_CHARS 2048
-#define SWORD_SCRIPTS_PATH ";./data;./data/scripts"
+#define SWORD_SCRIPTS_PATH ";./data/?.lua;./data/scripts/?.lua"
 
 /**
  * Prints Lua error message and exits the game.
