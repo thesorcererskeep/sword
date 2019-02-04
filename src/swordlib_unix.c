@@ -47,6 +47,13 @@ int sw_openlibs(lua_State *L) {
   return EXIT_SUCCESS;
 }
 
+void sw_con_set_title(const char* title) {
+  if (!title) {
+    title = SWORD_TITLE;
+  }
+  printf("\033]0;%s\007", title);
+}
+
 /* Print a string to stdout */
 static int con_print(lua_State *L) {
   /* Get number of args */
