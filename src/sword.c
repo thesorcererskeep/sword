@@ -5,9 +5,18 @@
 #include "lauxlib.h"
 #include "lualib.h"
 
+#include "sword.h"
 #include "swordlib.h"
 
+static void print_version(void) {
+  printf("%s v%s\n", SWORD_TITLE, SWORD_VERSION);
+  printf("%s\n", SWORD_TAGLINE);
+  printf("© %s %s\n", SWORD_YEAR, SWORD_AUTHOR);
+}
+
 int main(int argv, char* argc[]) {
+  print_version();
+
   /* Set console title */
   sw_con_set_title(SWORD_TITLE);
 
