@@ -25,7 +25,7 @@ int main(int argv, char* argc[]) {
 
   sw_openlibs(L);
 
-  int err = luaL_loadfile(L, "./scripts/main.lua") || lua_pcall(L, 0, 0, 0);
+  int err = luaL_loadfile(L, "./data/scripts/main.lua") || lua_pcall(L, 0, 0, 0);
   if (err) {
      sw_error(L, "%s\n", lua_tostring(L, -1));
   }
