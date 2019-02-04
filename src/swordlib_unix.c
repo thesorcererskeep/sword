@@ -10,7 +10,10 @@
 
 #include "swordlib.h"
 
-void l_error (lua_State *L, const char *format, ...) {
+static int con_print(lua_State *L);
+static int con_read_line(lua_State *L);
+
+void sw_error (lua_State *L, const char *format, ...) {
   va_list argp;
   va_start(argp, format);
   vfprintf(stderr, format, argp);
@@ -19,7 +22,7 @@ void l_error (lua_State *L, const char *format, ...) {
   exit(EXIT_FAILURE);
 }
 
-int con_init(lua_State *L) {
+int sw_openlibs(lua_State *L) {
   /* Insert true tab when tab key is pressed */
   rl_bind_key ('\t', rl_insert);
 
@@ -34,7 +37,7 @@ int con_init(lua_State *L) {
   return EXIT_SUCCESS;
 }
 
-int con_print(lua_State *L) {
+static int con_print(lua_State *L) {
   /* Get number of args */
   int c = lua_gettop(L);
   if (c < 1) {
@@ -67,7 +70,7 @@ int con_print(lua_State *L) {
   return 0;
 }
 
-int con_read_line(lua_State *L) {
+static int con_read_line(lua_State *L) {
   char *buf = NULL;
   buf = readline(SWORD_PROMPT);
   if (buf) {
