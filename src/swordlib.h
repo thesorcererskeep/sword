@@ -19,6 +19,6 @@ int sw_openlibs(lua_State *L);
 /**
  * Set the console window's title
  */
-void sw_con_set_title(const char* title);
+void sw_con_set_title(const char *title);
 
 #endif /* SWORDLIB_H */
