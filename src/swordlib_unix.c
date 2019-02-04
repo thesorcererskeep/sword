@@ -24,7 +24,10 @@ void sw_error (lua_State *L, const char *format, ...) {
 
 int sw_openlibs(lua_State *L) {
   /* Set up readline to insert tab when tab key is pressed */
-  rl_bind_key('\t', rl_insert);
+  int err = rl_bind_key('\t', rl_insert);
+  if (err != 0) {
+    fprintf(stderr, "Warning: Tab behavior undefined.\n");
+  }
 
   /* Load in console library */
   lua_createtable(L, 0, 0);
