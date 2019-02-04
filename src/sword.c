@@ -9,7 +9,8 @@
 
 int main(int argv, char* argc[]) {
   /* Set console title */
-  printf("\033]0;Swords & Sorery\007");
+  printf("\033]0;Swords & Sorcery\007");
+
   lua_State *L = luaL_newstate();
   luaL_openlibs(L);
 
