@@ -47,7 +47,7 @@ int sw_openlibs(lua_State *L) {
   return EXIT_SUCCESS;
 }
 
-void sw_con_set_title(const char* title) {
+void sw_con_set_title(const char *title) {
   if (!title) {
     title = SWORD_TITLE;
   }
@@ -64,7 +64,7 @@ static int con_print(lua_State *L) {
   }
 
   /* Print first arg */
-  const char* s = luaL_checklstring(L, 1, NULL);
+  const char *s = luaL_checklstring(L, 1, NULL);
   if (s == NULL) {
     printf("");
   } else {
