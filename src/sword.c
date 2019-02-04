@@ -22,8 +22,8 @@ int main(int argv, char* argc[]) {
 
   lua_State *L = luaL_newstate();
   luaL_openlibs(L);
-
   sw_openlibs(L);
+  sw_set_scripts_path(L, SWORD_SCRIPTS_PATH);
 
   int err = luaL_loadfile(L, "./data/scripts/main.lua") || lua_pcall(L, 0, 0, 0);
   if (err) {

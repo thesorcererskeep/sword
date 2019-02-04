@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,6 +25,22 @@ void sw_error (lua_State *L, const char *format, ...) {
   exit(EXIT_FAILURE);
 }
 
+int sw_set_scripts_path(lua_State* L, const char* path)
+{
+  assert(path);
+  lua_getglobal(L, "package");
+  lua_getfield(L, -1, "path");
+  const char* lua_path = lua_tostring(L, -1);
+  char new_path[SWORD_MAX_CHARS];
+  strncpy(new_path, lua_path, SWORD_MAX_CHARS);
+  strncat(new_path, path, (SWORD_MAX_CHARS - strlen(lua_path)));
+  lua_pop(L, 1);
+  lua_pushstring(L, new_path);
+  lua_setfield(L, -2, "path");
+  lua_pop(L, 1);
+  return 0;
+}
+
 int sw_openlibs(lua_State *L) {
   /* Set up readline to insert tab when tab key is pressed */
   int err = rl_bind_key('\t', rl_insert);
@@ -48,9 +65,7 @@ int sw_openlibs(lua_State *L) {
 }
 
 void sw_con_set_title(const char *title) {
-  if (!title) {
-    title = SWORD_TITLE;
-  }
+  assert(title);
   printf("\033]0;%s\007", title);
 }
 
