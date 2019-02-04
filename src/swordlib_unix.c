@@ -23,8 +23,8 @@ void sw_error (lua_State *L, const char *format, ...) {
 }
 
 int sw_openlibs(lua_State *L) {
-  /* Insert true tab when tab key is pressed */
-  rl_bind_key ('\t', rl_insert);
+  /* Set up readline to insert tab when tab key is pressed */
+  rl_bind_key('\t', rl_insert);
 
   /* Load in console library */
   lua_createtable(L, 0, 0);
@@ -37,6 +37,7 @@ int sw_openlibs(lua_State *L) {
   return EXIT_SUCCESS;
 }
 
+/* Print a string to stdout */
 static int con_print(lua_State *L) {
   /* Get number of args */
   int c = lua_gettop(L);
@@ -44,7 +45,7 @@ static int con_print(lua_State *L) {
     printf("\n");
     return 0;
   }
-  //printf("## c = %d\n", c);
+
   /* Print first arg */
   const char* s = luaL_checklstring(L, 1, NULL);
   if (s == NULL) {
@@ -70,6 +71,7 @@ static int con_print(lua_State *L) {
   return 0;
 }
 
+/* Read in a line of text from stdin */
 static int con_read_line(lua_State *L) {
   char *buf = NULL;
   buf = readline(SWORD_PROMPT);
