@@ -1,6 +1,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <readline/readline.h>
 
@@ -12,6 +13,7 @@
 
 static int con_print(lua_State *L);
 static int con_read_line(lua_State *L);
+static int str_split(lua_State *L);
 
 void sw_error (lua_State *L, const char *format, ...) {
   va_list argp;
@@ -36,6 +38,11 @@ int sw_openlibs(lua_State *L) {
   lua_pushcfunction(L, con_print);
   lua_setfield(L, -2, "print");
   lua_setglobal(L, "console");
+
+  /* Add split function to string */
+  lua_getglobal(L, "string");
+  lua_pushcfunction(L, str_split);
+  lua_setfield(L, -2, "split");
 
   return EXIT_SUCCESS;
 }
@@ -86,4 +93,40 @@ static int con_read_line(lua_State *L) {
   } else {
     return 0;
   }
+}
+
+/* Splits a string into words */
+static int str_split(lua_State *L) {
+  int num_args = lua_gettop(L);
+
+  /* Get the string to split */
+  const char *s = luaL_checklstring(L, 1, NULL);
+  if (s == NULL) {
+    return 0;
+  }
+
+  /* Determine the delimiters */
+  const char* delims = NULL;
+  if (num_args > 1) {
+    delims = luaL_checklstring(L, 2, NULL);
+  }
+  if (!delims) {
+    delims = SWORD_DELIMITERS;
+  }
+
+  /* Split the string */
+  char tokens[SWORD_MAX_CHARS];
+  strncpy(tokens, s, SWORD_MAX_CHARS);
+  int count = 0;
+  char *word = NULL;
+  word = strtok(tokens, delims);
+  lua_createtable(L, 0, 0);
+  while (word != NULL) {
+    count++;
+    lua_pushunsigned(L, count);
+    lua_pushstring(L, word);
+    lua_settable(L, -3);
+    word = strtok(NULL, delims);
+  }
+  return 1;
 }
