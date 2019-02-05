@@ -20,7 +20,7 @@ int main(int argv, char* argc[]) {
   luaL_openlibs(L);
   sw_openlibs(L);
   sw_set_scripts_path(L, SWORD_SCRIPTS_PATH);
-  int err = luaL_loadfile(L, "./data/scripts/main.lua") || lua_pcall(L, 0, 0, 0);
+  int err = luaL_loadfile(L, "./data/scripts/sword.lua") || lua_pcall(L, 0, 0, 0);
   if (err) {
      sw_error(L, "%s\n", lua_tostring(L, -1));
   }
