@@ -3,7 +3,7 @@ parser = require "parser"
 function main()
   while true do
     s = parser.prompt()
-    console.print(s)
+    parser.parse(s)
   end
 end
 
