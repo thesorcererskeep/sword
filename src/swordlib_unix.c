@@ -12,9 +12,11 @@
 
 #include "swordlib.h"
 
+static void _print_var(lua_State *L, int i);
 static int con_print(lua_State *L);
 static int con_read_line(lua_State *L);
 static int str_split(lua_State *L);
+
 
 void sw_error (lua_State *L, const char *format, ...) {
   va_list argp;
@@ -74,6 +76,37 @@ void sw_con_set_title(const char *title) {
   printf("\033]0;%s\007", title);
 }
 
+/* Prints an appropriate value for the item at index i on the stack */
+static void _print_var(lua_State *L, int i) {
+  if (lua_isstring(L, i)) {
+    const char *s = luaL_checklstring(L, i, NULL);
+    if (s != NULL) {
+      printf("%s", s);
+    }
+    return;
+  }
+
+  if (lua_isboolean(L, i)) {
+    const int bool = lua_toboolean(L, i);
+    if (bool == 1) {
+      printf("true");
+    } else {
+      printf("false");
+    }
+    return;
+  }
+
+  if (lua_istable(L, i)) {
+    printf("[table]");
+    return;
+  }
+
+  if (lua_isfunction(L, i)) {
+    printf("[function]");
+    return;
+  }
+}
+
 /* Print a string to stdout */
 static int con_print(lua_State *L) {
   /* Get number of args */
@@ -84,22 +117,13 @@ static int con_print(lua_State *L) {
   }
 
   /* Print first arg */
-  const char *s = luaL_checklstring(L, 1, NULL);
-  if (s == NULL) {
-    printf("");
-  } else {
-    printf("%s", s);
-  }
+  _print_var(L, 1);
 
   /* Space remaining args with tabs */
   if (c > 1) {
     for (int i = 1; i < c; i++) {
-      s = luaL_checklstring(L, i+1, NULL);
-      if (s == NULL) {
-        printf("");
-      } else {
-        printf("\t%s", s);
-      }
+      printf("\t");
+      _print_var(L, i + 1);
     }
   }
 
