@@ -15,8 +15,8 @@ local function get_player_room()
 end
 
 -- Convenience functions for modders
-function Room(token, settings)
-  add_room(token, settings)
+function Room(settings)
+  add_room(settings.token, settings)
 end
 
 function set_start(room)
@@ -25,8 +25,7 @@ end
 
 local M = {
   add_room = add_room,
-  get_player_room = get_player_room,
-  player = _player
+  get_player_room = get_player_room
 }
 
 return M
