@@ -1,5 +1,6 @@
 parser = require "parser"
 library = require "library"
+world = require "world"
 
 function main()
   library.open()
