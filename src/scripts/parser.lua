@@ -13,15 +13,20 @@ end
 
 -- Attempt to interpret the player's command
 local function parse(s)
+  -- Ignore blank input
   if not s or s == "" then
     console.print("Beg your pardon?")
     return
   end
+
+  -- Split sentence into words
   words = s:split()
   if #words > 2 then
     console.print("Sorry, I can only understand two word commands.")
     return
   end
+
+  -- Find the verb and noun
   verb_word = words[1]
   noun_word = ""
   if #words > 1 then noun_word = words[2] end
@@ -30,12 +35,14 @@ local function parse(s)
     console.print("noun_word = " .. noun_word)
   end
 
+  -- Check for a valid verb
   if not _verbs[verb_word] then
     console.print("I don't understand the word \"" .. verb_word .. ".\"")
     return
   end
-
   verb = _verbs[verb_word]
+
+  -- Execute the player's command
   return _commands[verb].func()
 end
 
