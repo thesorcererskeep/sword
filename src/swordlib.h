@@ -1,6 +1,8 @@
 #ifndef SWORDLIB_H
 #define SWORDLIB_H
 
+#include <stdbool.h>
+
 #define SWORD_PROMPT ">"
 #define SWORD_DELIMITERS " \r\n\t"
 #define SWORD_MAX_CHARS 2048

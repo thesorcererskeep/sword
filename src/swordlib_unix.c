@@ -53,7 +53,11 @@ int sw_openlibs(lua_State *L) {
 
   /* Create settings table */
   lua_createtable(L, 0, 0);
-  lua_pushboolean(L, 1);
+  if (_settings.debug) {
+    lua_pushboolean(L, 1);
+  } else {
+    lua_pushboolean(L, 0);
+  }
   lua_setfield(L, -2, "debug");
   lua_setglobal(L, "settings");
 
@@ -93,8 +97,8 @@ static void _print_var(lua_State *L, int i) {
   }
 
   if (lua_isboolean(L, i)) {
-    const int bool = lua_toboolean(L, i);
-    if (bool == 1) {
+    const int boolean = lua_toboolean(L, i);
+    if (boolean == 1) {
       printf("true");
     } else {
       printf("false");

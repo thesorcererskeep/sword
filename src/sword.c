@@ -32,15 +32,21 @@ int main(int argv, char *argc[]) {
 }
 
 static void parse_args(int argc, char *argv[]) {
+  sword_settings_t settings = {
+    false
+  };
   char c = '\0';
-  while ((c = getopt (argc, argv, "d")) != -1)
+  while ((c = getopt (argc, argv, "d")) != -1) {
     switch (c) {
       case 'd':
         printf("Debug mode on\n");
+        settings.debug = true;
         break;
       default:
         printf("Unknown option: '%c'\n", c);
       }
+  }
+  sw_set_settings(&settings);
 }
 
 static void print_version(void) {
