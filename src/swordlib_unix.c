@@ -48,6 +48,12 @@ int sw_openlibs(lua_State *L) {
     fprintf(stderr, "Warning: Tab behavior undefined.\n");
   }
 
+  /* Create settings table */
+  lua_createtable(L, 0, 0);
+  lua_pushboolean(L, 1);
+  lua_setfield(L, -2, "debug");
+  lua_setglobal(L, "settings");
+
   /* Load in console library */
   lua_createtable(L, 0, 0);
   lua_pushcfunction(L, con_read_line);

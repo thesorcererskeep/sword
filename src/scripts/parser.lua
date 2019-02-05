@@ -6,10 +6,6 @@ local function prompt(message)
   return s
 end
 
-settings = {
-  debug = true
-}
-
 -- Attempt to interpret the player's command
 local function parse(s)
   if not s or s == "" then
