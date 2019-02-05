@@ -21,7 +21,6 @@ void sw_error (lua_State *L, const char *format, ...) {
   va_start(argp, format);
   vfprintf(stderr, format, argp);
   va_end(argp);
-  lua_close(L);
   exit(EXIT_FAILURE);
 }
 

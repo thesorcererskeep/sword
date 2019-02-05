@@ -46,5 +46,7 @@ static void init(void) {
 static void shutdown(void) {
   /* Reset title and close down Lua */
   sw_con_set_title("");
-  lua_close(L);
+  if (L != NULL) {
+    lua_close(L);
+  }
 }
