@@ -45,7 +45,7 @@ local function add_command(token, func, verbs, requires_object, err_message)
   if not func then error("Undefined command function in add_command") end
   verbs = verbs or {token}
   requires_object = requires_object or false
-  err_message = err_message or ("What would you like to " .. token .. "?")
+  err_message = err_message or ("What would you like to " .. verbs[1] .. "?")
   for _, v in pairs(verbs) do
     _verbs[v] = token
   end
@@ -56,10 +56,21 @@ local function add_command(token, func, verbs, requires_object, err_message)
   }
 end
 
+-- List all of the commands available to the parser
+local function dump_commands()
+  for k, v in pairs(_commands) do
+    print(k .. " = {")
+    print("func = " .. tostring(v.func))
+    print("requires_object = " .. tostring(v.requires_object))
+    print("err_message = " .. v.err_message)
+  end
+end
+
 local M = {
   prompt = prompt,
   parse = parse,
-  add_command = add_command
+  add_command = add_command,
+  dump_commands = dump_commands
 }
 
 return M

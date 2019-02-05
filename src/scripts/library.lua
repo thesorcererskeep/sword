@@ -7,6 +7,7 @@ end
 -- Loads all default commands into the parser
 local function open()
   parser.add_command("quit", do_quit, {"quit", "q"})
+  parser.dump_commands()
 end
 
 local M = {
