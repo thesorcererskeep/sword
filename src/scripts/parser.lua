@@ -47,19 +47,19 @@ local function parse(s)
 end
 
 -- Adds a command to the parser
-local function add_command(token, func, verbs, requires_object, err_message)
+local function add_command(token, func, settings)
   if not token then error("Undefined token in add_command") end
   if not func then error("Undefined command function in add_command") end
-  verbs = verbs or {token:lower()}
-  requires_object = requires_object or false
-  err_message = err_message or ("What would you like to " .. verbs[1] .. "?")
-  for _, v in pairs(verbs) do
+  settings.verbs = settings.verbs or {token:lower()}
+  settings.requires_object = settings.requires_object or false
+  settings.err_message = settings.err_message or ("What would you like to " .. settings.verbs[1] .. "?")
+  for _, v in pairs(settings.verbs) do
     _verbs[v:lower()] = token
   end
   _commands[token] = {
     func = func,
-    requires_object = requires_object,
-    err_message = err_message
+    requires_object = settings.requires_object,
+    err_message = settings.err_message
   }
 end
 

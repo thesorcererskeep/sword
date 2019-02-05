@@ -12,9 +12,17 @@ end
 
 -- Loads all default commands into the parser
 local function open()
-  parser.add_command("quit", do_quit, {"quit", "q"})
-  parser.add_command("wait", do_wait, {"wait", "z"})
-  --parser.dump_commands()
+  parser.add_command("quit",
+                     do_quit,
+                     {
+                       verbs = {"quit", "q"}
+                     })
+  parser.add_command("wait",
+                     do_wait,
+                     {
+                       verbs = {"wait", "z"}
+                     })
+  parser.dump_commands()
 end
 
 local M = {
