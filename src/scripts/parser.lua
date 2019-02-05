@@ -50,11 +50,11 @@ end
 local function add_command(token, func, verbs, requires_object, err_message)
   if not token then error("Undefined token in add_command") end
   if not func then error("Undefined command function in add_command") end
-  verbs = verbs or {token}
+  verbs = verbs or {token:lower()}
   requires_object = requires_object or false
   err_message = err_message or ("What would you like to " .. verbs[1] .. "?")
   for _, v in pairs(verbs) do
-    _verbs[v] = token
+    _verbs[v:lower()] = token
   end
   _commands[token] = {
     func = func,
