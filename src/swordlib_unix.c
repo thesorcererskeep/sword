@@ -12,6 +12,8 @@
 
 #include "swordlib.h"
 
+static sword_settings_t _settings;
+
 static void _print_var(lua_State *L, int i);
 static int con_print(lua_State *L);
 static int con_read_line(lua_State *L);
@@ -75,6 +77,10 @@ void sw_con_set_title(const char *title) {
   assert(title);
   printf("\033]0;%s\007", title);
 }
+
+ void sw_set_settings(const sword_settings_t *p_settings) {
+   _settings.debug = p_settings->debug;
+ }
 
 /* Prints an appropriate value for the item at index i on the stack */
 static void _print_var(lua_State *L, int i) {
