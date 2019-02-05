@@ -22,7 +22,6 @@ local function open()
                      {
                        verbs = {"wait", "z"}
                      })
-  parser.dump_commands()
 end
 
 local M = {
