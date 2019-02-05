@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "unistd.h"
+
 #include "lua.h"
 #include "lauxlib.h"
 #include "lualib.h"
@@ -10,11 +12,13 @@
 
 static lua_State *L = NULL;
 
+static void parse_args(int argc, char *argv[]);
 static void print_version(void);
 static void init(void);
 static void shutdown(void);
 
-int main(int argv, char* argc[]) {
+int main(int argv, char *argc[]) {
+  parse_args(argv, argc);
   print_version();
   init();
   luaL_openlibs(L);
@@ -25,6 +29,18 @@ int main(int argv, char* argc[]) {
      sw_error(L, "%s\n", lua_tostring(L, -1));
   }
   return EXIT_SUCCESS;
+}
+
+static void parse_args(int argc, char *argv[]) {
+  char c = '\0';
+  while ((c = getopt (argc, argv, "d")) != -1)
+    switch (c) {
+      case 'd':
+        printf("Debug mode on\n");
+        break;
+      default:
+        printf("Unknown option: '%c'\n", c);
+      }
 }
 
 static void print_version(void) {
