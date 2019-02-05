@@ -3,8 +3,8 @@ local _player = {}
 
 -- Creates a new room and adds it to the world
 local function add_room(token, settings)
-  if not token then error("Room token not set in world.add_room") end
-  if not settings then error("Room settings not set in world.add_room") end
+  if not token then error("Undefined token in world.add_room") end
+  if not settings then error("Undefined settings in world.add_room") end
   settings.visited = settings.visited or false
   _rooms[token] = settings
 end

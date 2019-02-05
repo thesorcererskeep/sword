@@ -48,8 +48,8 @@ end
 
 -- Adds a command to the parser
 local function add_command(token, func, settings)
-  if not token then error("Undefined token in add_command") end
-  if not func then error("Undefined command function in add_command") end
+  if not token then error("Undefined token in parser.add_command") end
+  if not func then error("Undefined command function in parser.add_command") end
   settings.verbs = settings.verbs or {token:lower()}
   settings.requires_object = settings.requires_object or false
   settings.err_message = settings.err_message or ("What would you like to " .. settings.verbs[1] .. "?")
