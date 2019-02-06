@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include <readline/readline.h>
+#include <unistd.h>
 
 #include "lua.h"
 #include "lauxlib.h"
@@ -87,10 +88,27 @@ void sw_get_settings(sword_settings_t *p_settings) {
   memcpy(p_settings, &_settings, sizeof(sword_settings_t));
 }
 
- void sw_set_settings(const sword_settings_t *p_settings) {
+void sw_set_settings(const sword_settings_t *p_settings) {
    assert(p_settings);
    memcpy(&_settings, p_settings, sizeof(sword_settings_t));
  }
+
+void sw_parse_args(int argc, char *argv[]) {
+   sword_settings_t settings;
+   sw_get_settings(&settings);
+   char c = '\0';
+   while ((c = getopt (argc, argv, "d")) != -1) {
+     switch (c) {
+       case 'd':
+         printf("Debug mode on\n");
+         settings.debug = true;
+         break;
+       default:
+         printf("Unknown option: '%c'\n", c);
+       }
+   }
+   sw_set_settings(&settings);
+}
 
 /* Prints an appropriate value for the item at index i on the stack */
 static void _print_var(lua_State *L, int i) {

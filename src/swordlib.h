@@ -35,11 +35,16 @@ void sw_con_set_title(const char *title);
 /**
  * Gets game settings
  */
- void sw_get_settings(sword_settings_t *p_settings);
+void sw_get_settings(sword_settings_t *p_settings);
 
 /**
  * Sets game settings
  */
- void sw_set_settings(const sword_settings_t *p_settings);
+void sw_set_settings(const sword_settings_t *p_settings);
+
+/**
+ * Parses command line args
+ */
+void sw_parse_args(int argc, char *argv[]);
 
 #endif /* SWORDLIB_H */
