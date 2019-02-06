@@ -106,6 +106,11 @@ static void _print_var(lua_State *L, int i) {
     return;
   }
 
+  if (lua_isnil(L, i)) {
+    printf("nil");
+    return;
+  }
+
   if (lua_istable(L, i)) {
     printf("[table]");
     return;
