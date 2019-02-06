@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <ctype.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,6 +20,7 @@ static void _print_var(lua_State *L, int i);
 static int con_print(lua_State *L);
 static int con_read_line(lua_State *L);
 static int str_split(lua_State *L);
+static int str_trim(lua_State *L);
 
 
 void sw_error (lua_State *L, const char *format, ...) {
@@ -74,6 +76,8 @@ int sw_openlibs(lua_State *L) {
   lua_getglobal(L, "string");
   lua_pushcfunction(L, str_split);
   lua_setfield(L, -2, "split");
+  lua_pushcfunction(L, str_trim);
+  lua_setfield(L, -2, "trim");
 
   return EXIT_SUCCESS;
 }
@@ -218,5 +222,54 @@ static int str_split(lua_State *L) {
     lua_settable(L, -3);
     word = strtok(NULL, delims);
   }
+  return 1;
+}
+
+/* Trims whitespace from both ends of a string */
+static int str_trim(lua_State *L) {
+  /* Get the string to split */
+  size_t length = 0;
+  const char *s = luaL_checklstring(L, 1, &length);
+  if (s == NULL || length < 1) {
+    return 0;
+  }
+
+  /* Determine where actual characters start */
+  size_t i = 0;
+  for (i = 0; i < length; i++) {
+    char c = s[i];
+    if (!isspace(c)) {
+      break;
+    }
+  }
+  if (i >= (length - 1)) {
+    return 0;
+  }
+  size_t start = i;
+
+  /* Determine where actual characters end */
+  for (i = length; i == 0; i--) {
+    char c = s[i];
+    if (!isspace(c)) {
+      break;
+    }
+  }
+  if (i <= (start)) {
+    return 0;
+  }
+  size_t end = i;
+
+  /* Copy contents of s into trimmed string */
+  size_t j = 0;
+  char trimmed[SWORD_MAX_CHARS];
+  for (i = start; i < end; i++) {
+      trimmed[j] = s[i];
+      j++;
+      if (j >= SWORD_MAX_CHARS - 1) {
+        break;
+      }
+  }
+  trimmed[j] = '\0';
+  lua_pushstring(L, trimmed);
   return 1;
 }
