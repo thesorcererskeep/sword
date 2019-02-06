@@ -82,8 +82,14 @@ void sw_con_set_title(const char *title) {
   printf("\033]0;%s\007", title);
 }
 
+void sw_get_settings(sword_settings_t *p_settings) {
+  assert(p_settings);
+  memcpy(p_settings, &_settings, sizeof(sword_settings_t));
+}
+
  void sw_set_settings(const sword_settings_t *p_settings) {
-   _settings.debug = p_settings->debug;
+   assert(p_settings);
+   memcpy(&_settings, p_settings, sizeof(sword_settings_t));
  }
 
 /* Prints an appropriate value for the item at index i on the stack */

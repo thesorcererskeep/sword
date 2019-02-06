@@ -33,6 +33,11 @@ int sw_openlibs(lua_State *L);
 void sw_con_set_title(const char *title);
 
 /**
+ * Gets game settings
+ */
+ void sw_get_settings(sword_settings_t *p_settings);
+
+/**
  * Sets game settings
  */
  void sw_set_settings(const sword_settings_t *p_settings);
