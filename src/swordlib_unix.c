@@ -160,13 +160,13 @@ static int con_print(lua_State *L) {
   }
 
   /* Print first arg */
-  _print_var(L, 1);
+  _con_print_var(L, 1);
 
   /* Space remaining args with tabs */
   if (c > 1) {
     for (int i = 1; i < c; i++) {
       printf("\t");
-      _print_var(L, i + 1);
+      _con_print_var(L, i + 1);
     }
   }
 
