@@ -148,6 +148,11 @@ static void _con_print_var(lua_State *L, int i) {
     printf("[function]");
     return;
   }
+
+  if (lua_isthread(L, i)) {
+    printf("[thread]");
+    return;
+  }
 }
 
 /* Print a string to stdout */
