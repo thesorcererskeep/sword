@@ -16,7 +16,7 @@
 
 static sword_settings_t _settings;
 
-static void _print_var(lua_State *L, int i);
+static void _con_print_var(lua_State *L, int i);
 static int con_print(lua_State *L);
 static int con_read_line(lua_State *L);
 static int str_split(lua_State *L);
@@ -115,7 +115,7 @@ void sw_parse_args(int argc, char *argv[]) {
 }
 
 /* Prints an appropriate value for the item at index i on the stack */
-static void _print_var(lua_State *L, int i) {
+static void _con_print_var(lua_State *L, int i) {
   if (lua_isstring(L, i)) {
     const char *s = luaL_checklstring(L, i, NULL);
     if (s != NULL) {
