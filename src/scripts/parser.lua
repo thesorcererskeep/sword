@@ -40,6 +40,10 @@ local _dictionary = {
   ["brian"] = {
     type = "noun",
     token = "brian"
+  },
+  ["save"] = {
+    type = "system",
+    token = "save"
   }
 }
 
@@ -63,6 +67,14 @@ local function parse_verb(args)
   if not word then
     console.print("I don't understand the word \"" .. verb_word .. "\"")
     return
+  elseif word.type == "system" then
+    local sys_args = table.concat(words, " ")
+    local system = {
+      command = word.token,
+      args = sys_args
+    }
+    args.system = system
+    return args
   elseif word.type ~= "verb" and word.type ~= "direction" then
     console.print("Your command must begin with a verb.")
     return
@@ -142,6 +154,13 @@ local function parse(s)
   -- Find the verb
   args = parse_verb({words = words})
   if not args then return end
+  if args.system then
+    if settings.debug then
+      print("## system command: " .. args.system.command .. "(\"" .. args.system.args .. "\")")
+    end
+    -- Execute system command
+    return
+  end
 
   -- Find the object
   if #words > 0 then
