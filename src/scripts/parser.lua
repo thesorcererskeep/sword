@@ -1,7 +1,6 @@
 -- Internal dictionary
 local _verbs = {}
 local _nouns = {}
-local _commands = {}
 
 -- Prompt the player for input
 local function prompt(message)
@@ -25,59 +24,11 @@ local function parse(s)
     console.print("Sorry, I can only understand two word commands.")
     return
   end
-
-  -- Find the verb and noun
-  verb_word = words[1]
-  noun_word = ""
-  if #words > 1 then noun_word = words[2] end
-  if settings.debug then
-    console.print("verb_word = " .. verb_word)
-    console.print("noun_word = " .. noun_word)
-  end
-
-  -- Check for a valid verb
-  if not _verbs[verb_word] then
-    console.print("I don't understand the word \"" .. verb_word .. ".\"")
-    return
-  end
-  verb = _verbs[verb_word]
-
-  -- Execute the player's command
-  return _commands[verb].func()
-end
-
--- Adds a command to the parser
-local function add_command(token, func, settings)
-  if not token then error("Undefined token in parser.add_command") end
-  if not func then error("Undefined command function in parser.add_command") end
-  settings.verbs = settings.verbs or {token:lower()}
-  settings.requires_object = settings.requires_object or false
-  settings.err_message = settings.err_message or ("What would you like to " .. settings.verbs[1] .. "?")
-  for _, v in pairs(settings.verbs) do
-    _verbs[v:lower()] = token
-  end
-  _commands[token] = {
-    func = func,
-    requires_object = settings.requires_object,
-    err_message = settings.err_message
-  }
-end
-
--- List all of the commands available to the parser
-local function dump_commands()
-  for k, v in pairs(_commands) do
-    print(k .. " = {")
-    print("func = " .. tostring(v.func))
-    print("requires_object = " .. tostring(v.requires_object))
-    print("err_message = " .. v.err_message)
-  end
 end
 
 local M = {
   prompt = prompt,
   parse = parse,
-  add_command = add_command,
-  dump_commands = dump_commands
 }
 
 return M
