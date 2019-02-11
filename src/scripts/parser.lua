@@ -135,7 +135,7 @@ function parse_object(args, key)
       console.print("I don't understand the word \"" .. obj_word .. ".\"")
       return
     elseif word.token == "verb" then
-      console.print("I was expecting a noun.")
+      console.print("I was expecting a noun after \"" .. command.verb .. ".\"")
       return
     elseif word.token == "ignore" then
       -- skip it
