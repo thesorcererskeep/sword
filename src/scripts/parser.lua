@@ -3,10 +3,18 @@ local _dictionary = {
   ["wait"] = {
     token = "verb",
     value = "wait",
+    syntax = {
+      object = false,
+      indirect_object = false,
+    }
   },
   ["walk"] = {
     token = "verb",
     value = "walk",
+    syntax = {
+      object = true,
+      indirect_object = false,
+    }
   },
   ["north"] = {
     token = "direction",
@@ -15,6 +23,7 @@ local _dictionary = {
   ["take"] = {
     token = "verb",
     value = "take",
+    syntax = "vo"
   },
   ["coin"] = {
     token = "noun",
@@ -34,7 +43,11 @@ local _dictionary = {
   },
   ["give"] = {
     token = "verb",
-    value = "give"
+    value = "give",
+    syntax = {
+      object = true,
+      indirect_object = true,
+    },
   },
   ["brian"] = {
     token = "noun",
@@ -168,6 +181,32 @@ function parse_object(args, key)
   }
 end
 
+-- Check if a command is semantically valid
+local function analyse_semantics(args)
+  assert(args)
+  local command = args.command
+  local syntax = _dictionary[command.verb].syntax
+  if syntax.object then
+    if not command.object or not command.object.noun then
+      if command.verb == "walk" then
+        print("Which direction would you like to go?")
+        return
+      else
+        print("What are you trying to " .. command.verb_string .. "?")
+        return
+      end
+    end
+  end
+
+  if syntax.indirect_object then
+    if not command.indirect_object or not command.indirect_object.noun then
+      print("What are you trying to " .. command.verb_string .. " the " .. command.object.noun_string .. " to?")
+      return
+    end
+  end
+  return args
+end
+
 -- Attempt to interpret the player's command
 local function parse(s)
   -- Ignore blank input
@@ -203,6 +242,15 @@ local function parse(s)
   if #words > 0 then
     args = parse_object(args, "indirect_object")
     if not args then return end
+  end
+
+  -- Make sure the command makes sense
+  if args.command then
+    args = analyse_semantics(args)
+    if not args then return end
+  else
+    console.print("I don't understand what you mean.")
+    return
   end
 
   local command = args.command
