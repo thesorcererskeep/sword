@@ -47,6 +47,28 @@ local _dictionary = {
   }
 }
 
+local function print_table(t, i)
+  local indent = i or 1
+  local spaces = string.rep(" ", indent * 2)
+  local spc = ""
+  if indent > 1 then
+    spc = string.rep(" ", (indent - 1) * 2)
+  end
+  print("{")
+  for k, v in pairs(t) do
+    io.write(spaces .. k .. " = ")
+    if type(v) == "string" then print('"' .. v .. '",')
+    elseif type(v) == "number" then print(v .. ",")
+    elseif type(v) == "boolean" then print(tostring(v) .. ",")
+    elseif type(v) == "table" then
+      print_table(v, indent + 1)
+    else
+      print("[unknown]")
+    end
+  end
+  print(spc .. "}")
+end
+
 -- Prompt the player for input
 local function prompt(message)
   if message then console.print(message) end
@@ -176,15 +198,8 @@ local function parse(s)
 
   local command = args.command
   if settings.debug then
-    print("## command = {")
-    print("     verb = \"" .. command.verb .. "\"")
-    print("     object.prep = \"" .. (command.object.preposition or "nil") .. "\"")
-    print("     object.adj = \"" .. (command.object.adjective or "nil") .. "\"")
-    print("     object.noun = \"" .. (command.object.noun or "nil") .. "\"")
-    print("     indirect_object.prep = \"" .. (command.indirect_object.preposition or "nil") .. "\"")
-    print("     indirect_object.adj = \"" .. (command.indirect_object.adjective or "nil") .. "\"")
-    print("     indirect_object.noun = \"" .. (command.indirect_object.noun or "nil") .. "\"")
-    print("}")
+    io.write("## command = ")
+    print_table(command)
   end
 end
 
