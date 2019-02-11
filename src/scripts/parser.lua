@@ -83,10 +83,10 @@ local function parse_verb(args)
   local words = args.words
   local command = args.command or {}
 
-  local verb_word = table.remove(words, 1)
-  local word = _dictionary[verb_word]
+  local w = table.remove(words, 1)
+  local word = _dictionary[w]
   if not word then
-    console.print("I don't understand the word \"" .. verb_word .. ".\"")
+    console.print("I don't understand the word \"" .. w .. ".\"")
     return
   elseif word.token == "system" then
     local sys_args = table.concat(words, " ")
@@ -102,6 +102,7 @@ local function parse_verb(args)
   end
 
   command.verb = word.value
+  command.verb_string = w;
   if word.token == "direction" then
     command.verb = "walk"
     command.object = command.object or {}
@@ -126,29 +127,33 @@ function parse_object(args, key)
 
   local done = false
   while not done do
-    local obj_word = table.remove(words, 1)
-    if not obj_word then
+    local w = table.remove(words, 1)
+    if not w then
       done = true
       break
     end
-    word = _dictionary[obj_word]
+    word = _dictionary[w]
     if not word then
-      console.print("I don't understand the word \"" .. obj_word .. ".\"")
+      console.print("I don't understand the word \"" .. w .. ".\"")
       return
     elseif word.token == "verb" then
-      console.print("I was expecting a noun after \"" .. command.verb .. ".\"")
+      console.print("I was expecting a noun after \"" .. command.verb_str .. ".\"")
       return
     elseif word.token == "ignore" then
       -- skip it
     elseif word.token == "preposition" then
       command[key].preposition = word.value
+      command[key].preposition_string = w
     elseif word.token == "adjective" then
       command[key].adjective = word.value
+      command[key].adjective_string = w
     elseif word.token == "direction" then
       command[key].noun = word.value
+      command[key].noun_string = w
       done = true
     elseif word.token == "noun" then
       command[key].noun = word.value
+      command[key].noun_string = w
       done = true;
     end
   end
