@@ -46,6 +46,7 @@ local _dictionary = {
   }
 }
 
+-- Pretty prints a table
 local function print_table(t, i)
   local indent = i or 1
   local spaces = string.rep(" ", indent * 2)
