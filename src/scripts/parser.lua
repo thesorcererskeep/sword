@@ -1,49 +1,49 @@
 -- Internal dictionary
 local _dictionary = {
   ["wait"] = {
-    type = "verb",
-    token = "wait",
+    token = "verb",
+    value = "wait",
   },
   ["walk"] = {
-    type = "verb",
-    token = "walk",
+    token = "verb",
+    value = "walk",
   },
   ["north"] = {
-    type = "direction",
-    token = "north"
+    token = "direction",
+    value = "north"
   },
   ["take"] = {
-    type = "verb",
-    token = "take",
+    token = "verb",
+    value = "take",
     syntax = "vo"
   },
   ["coin"] = {
-    type = "noun",
-    token = "coin"
+    token = "noun",
+    value = "coin"
   },
   ["shiny"] = {
-    type = "adjective",
-    token = "shiny"
+    token = "adjective",
+    value = "shiny"
   },
   ["the"] = {
-    type = "ignore",
-    token = nil
+    token = "ignore",
+    value = nil
   },
   ["to"] = {
-    type = "preposition",
-    token = "to"
+    token = "preposition",
+    value = "to"
   },
   ["give"] = {
-    type = "verb",
-    token = "give"
+    token = "verb",
+    value = "give"
   },
   ["brian"] = {
-    type = "noun",
-    token = "brian"
+    token = "noun",
+    value = "brian"
   },
   ["save"] = {
-    type = "system",
-    token = "save"
+    token = "system",
+    value = "save"
   }
 }
 
@@ -89,24 +89,24 @@ local function parse_verb(args)
   if not word then
     console.print("I don't understand the word \"" .. verb_word .. "\"")
     return
-  elseif word.type == "system" then
+  elseif word.token == "system" then
     local sys_args = table.concat(words, " ")
     local system = {
-      command = word.token,
+      command = word.value,
       args = sys_args
     }
     args.system = system
     return args
-  elseif word.type ~= "verb" and word.type ~= "direction" then
+  elseif word.token ~= "verb" and word.token ~= "direction" then
     console.print("Your command must begin with a verb.")
     return
   end
 
-  command.verb = word.token
+  command.verb = word.value
   command.object.noun = nil
-  if word.type == "direction" then
+  if word.token == "direction" then
     command.verb = "walk"
-    command.object.noun = word.token
+    command.object.noun = word.value
   end
 
   return {
@@ -116,12 +116,12 @@ local function parse_verb(args)
 end
 
 -- Check for a valid object
-function parse_object(args, type)
+function parse_object(args, token)
   assert(args)
   local words = args.words
   local command = args.command or {}
-  type = type or "object"
-  command[type] = command[type] or {}
+  token = token or "object"
+  command[token] = command[token] or {}
 
   if settings.debug then print("## #words = " .. #words) end
 
@@ -135,20 +135,20 @@ function parse_object(args, type)
     if not word then
       console.print("I don't understand the word \"" .. obj_word .. "\"")
       return
-    elseif word.type == "verb" then
+    elseif word.token == "verb" then
       console.print("I was expecting a noun.")
       return
-    elseif word.type == "ignore" then
+    elseif word.token == "ignore" then
       -- skip it
-    elseif word.type == "preposition" then
-      command[type].preposition = word.token
-    elseif word.type == "adjective" then
-      command[type].adjective = word.token
-    elseif word.type == "direction" then
-      command[type].noun = word.token
+    elseif word.token == "preposition" then
+      command[token].preposition = word.value
+    elseif word.token == "adjective" then
+      command[token].adjective = word.value
+    elseif word.token == "direction" then
+      command[token].noun = word.value
       done = true
-    elseif word.type == "noun" then
-      command[type].noun = word.token
+    elseif word.token == "noun" then
+      command[token].noun = word.value
       done = true;
     end
   end
