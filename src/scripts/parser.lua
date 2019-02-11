@@ -153,8 +153,7 @@ function parse_object(args, key)
   end
 
   if not command[key].noun then
-    console.print("I was expecting a noun.")
-    return
+    command[key] = nil
   end
 
   return {
