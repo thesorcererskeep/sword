@@ -15,7 +15,6 @@ local _dictionary = {
   ["take"] = {
     token = "verb",
     value = "take",
-    syntax = "vo"
   },
   ["coin"] = {
     token = "noun",
@@ -82,12 +81,11 @@ local function parse_verb(args)
   assert(args)
   local words = args.words
   local command = args.command or {}
-  command.object = command.object or {}
 
   local verb_word = table.remove(words, 1)
   local word = _dictionary[verb_word]
   if not word then
-    console.print("I don't understand the word \"" .. verb_word .. "\"")
+    console.print("I don't understand the word \"" .. verb_word .. ".\"")
     return
   elseif word.token == "system" then
     local sys_args = table.concat(words, " ")
@@ -103,9 +101,9 @@ local function parse_verb(args)
   end
 
   command.verb = word.value
-  command.object.noun = nil
   if word.token == "direction" then
     command.verb = "walk"
+    command.object = command.object or {}
     command.object.noun = word.value
   end
 
@@ -116,12 +114,12 @@ local function parse_verb(args)
 end
 
 -- Check for a valid object
-function parse_object(args, token)
+function parse_object(args, key)
   assert(args)
   local words = args.words
   local command = args.command or {}
-  token = token or "object"
-  command[token] = command[token] or {}
+  local key = key or "object"
+  command[key] = command[key] or {}
 
   if settings.debug then print("## #words = " .. #words) end
 
@@ -129,11 +127,12 @@ function parse_object(args, token)
   while not done do
     local obj_word = table.remove(words, 1)
     if not obj_word then
-      return args
+      done = true
+      break
     end
     word = _dictionary[obj_word]
     if not word then
-      console.print("I don't understand the word \"" .. obj_word .. "\"")
+      console.print("I don't understand the word \"" .. obj_word .. ".\"")
       return
     elseif word.token == "verb" then
       console.print("I was expecting a noun.")
@@ -141,16 +140,21 @@ function parse_object(args, token)
     elseif word.token == "ignore" then
       -- skip it
     elseif word.token == "preposition" then
-      command[token].preposition = word.value
+      command[key].preposition = word.value
     elseif word.token == "adjective" then
-      command[token].adjective = word.value
+      command[key].adjective = word.value
     elseif word.token == "direction" then
-      command[token].noun = word.value
+      command[key].noun = word.value
       done = true
     elseif word.token == "noun" then
-      command[token].noun = word.value
+      command[key].noun = word.value
       done = true;
     end
+  end
+
+  if not command[key].noun then
+    console.print("I was expecting a noun.")
+    return
   end
 
   return {
