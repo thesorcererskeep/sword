@@ -92,6 +92,7 @@ local function prompt(message)
   while not s do
     s = console.read_line()
     s = s:lower()
+    
     -- Ignore blank input
     s = s:trim()
     if not s or s == "" then
@@ -101,6 +102,7 @@ local function prompt(message)
   return s
 end
 
+-- Ask the player to supply an object
 local function prompt_for_object(message)
   local s = prompt(message)
   words = s:split()
@@ -115,6 +117,7 @@ local function prompt_for_object(message)
   return args.command
 end
 
+-- Ask the user to supply an indirect_object
 local function prompt_for_indirect_object(message)
   local s = prompt(message)
   words = s:split()
@@ -226,6 +229,10 @@ local function analyse_semantics(args)
   assert(args)
   local command = args.command
   local syntax = _dictionary[command.verb].syntax
+  -- Skip if the command provides it's own semantic checking
+  if syntax.user_function then return end
+
+  -- Check for a valid object and prompt for one if there isn't
   if syntax.object then
     if not command.object or not command.object.noun then
       if command.verb == "walk" then
@@ -240,6 +247,7 @@ local function analyse_semantics(args)
     end
   end
 
+  -- Check for a valid indirect_object and prompt for one if there isn't
   if syntax.indirect_object then
     if not command.indirect_object or not command.indirect_object.noun then
       print("What are you trying to " .. command.verb_string .. " the " .. command.object.noun_string .. " to?")
