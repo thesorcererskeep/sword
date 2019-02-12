@@ -297,6 +297,7 @@ local function parse(s)
     io.write("## command = ")
     print_table(command)
   end
+  return command
 end
 
 local M = {
