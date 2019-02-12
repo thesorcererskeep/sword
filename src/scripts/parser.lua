@@ -23,7 +23,10 @@ local _dictionary = {
   ["take"] = {
     token = "verb",
     value = "take",
-    syntax = "vo"
+    syntax = {
+      object = true,
+      indirect_object = false,
+    }
   },
   ["coin"] = {
     token = "noun",
@@ -85,9 +88,46 @@ end
 -- Prompt the player for input
 local function prompt(message)
   if message then console.print(message) end
-  s = console.read_line()
-  s = s:lower()
+  local s = nil
+  while not s do
+    s = console.read_line()
+    s = s:lower()
+    -- Ignore blank input
+    s = s:trim()
+    if not s or s == "" then
+      console.print("Beg your pardon?")
+    end
+  end
   return s
+end
+
+local function prompt_for_object(message)
+  local s = prompt(message)
+  words = s:split()
+  local args = parse_object({
+    words = words,
+    command = {}
+  })
+  if not args.command or not args.command.object then
+    console.print("I don't understand what you are trying to do.")
+    return
+  end
+  return args.command
+end
+
+local function prompt_for_indirect_object(message)
+  local s = prompt(message)
+  words = s:split()
+  local args = parse_object({
+    words = words,
+    command = {}
+  },
+  "indirect_object")
+  if not args.command or not args.command.indirect_object then
+    console.print("I don't understand what you are trying to do.")
+    return
+  end
+  return args.command
 end
 
 -- Checks for a valid verb
@@ -193,7 +233,9 @@ local function analyse_semantics(args)
         return
       else
         print("What are you trying to " .. command.verb_string .. "?")
-        return
+        local cmd = prompt_for_object()
+        if not cmd then return end;
+        args.command.object = cmd.object;
       end
     end
   end
@@ -201,7 +243,9 @@ local function analyse_semantics(args)
   if syntax.indirect_object then
     if not command.indirect_object or not command.indirect_object.noun then
       print("What are you trying to " .. command.verb_string .. " the " .. command.object.noun_string .. " to?")
-      return
+      local cmd = prompt_for_indirect_object()
+      if not cmd then return end;
+      args.command.indirect_object = cmd.indirect_object;
     end
   end
   return args
@@ -209,12 +253,7 @@ end
 
 -- Attempt to interpret the player's command
 local function parse(s)
-  -- Ignore blank input
-  s = s:trim()
-  if not s or s == "" then
-    console.print("Beg your pardon?")
-    return
-  end
+  assert(s)
 
   if settings.debug then print("## s = \"" .. s .. "\"") end
 
