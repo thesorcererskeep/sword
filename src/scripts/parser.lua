@@ -308,11 +308,31 @@ local function parse(s)
   return command
 end
 
+function add_word(word, token, value, syntax)
+  assert(word)
+  assert(token)
+  assert(value)
+  local syntax = syntax or {
+    user_function = false,
+    object = true,
+    indirect_object = false
+  }
+  if _dictionary[word] ~= nil and settings.debug then
+    console.print("Warning: Overwriting dictionary entry for \"" .. word .. ".\"")
+  end
+  _dictionary[word] = {
+    token = token,
+    value = value,
+    syntax = syntax
+  }
+end
+
 local M = {
   prompt = prompt,
   prompt_for_object = prompt_for_object,
   prompt_for_indirect_object = prompt_for_indirect_object,
   parse = parse,
+  add_word = add_word,
 }
 
 return M
