@@ -92,7 +92,7 @@ local function prompt(message)
   while not s do
     s = console.read_line()
     s = s:lower()
-    
+
     -- Ignore blank input
     s = s:trim()
     if not s or s == "" then
@@ -310,6 +310,8 @@ end
 
 local M = {
   prompt = prompt,
+  prompt_for_object = prompt_for_object,
+  prompt_for_indirect_object = prompt_for_indirect_object,
   parse = parse,
 }
 
