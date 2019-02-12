@@ -308,6 +308,7 @@ local function parse(s)
   return command
 end
 
+-- Adds a word to the dictionary
 function add_word(word, token, value, syntax)
   assert(word)
   assert(token)
