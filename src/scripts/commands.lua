@@ -8,6 +8,7 @@ end
 
 interpreter.add_command("quit", "Exits the game.", do_quit, {"q"})
 
+-- Skips a turn
 function do_wait(args)
   console.print("Time passes.")
   return 1
