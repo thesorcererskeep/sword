@@ -62,11 +62,11 @@ end
 
 -- Adds a command to the interpreter
 -- Parameters:
--- command  - The name of the command
--- help     - Help text to display if player types help [command]
--- func     - The function used to implement the command
--- verb     - A list of synonymous verbs the player can type to invoke
---            the command
+-- token - The name of the command
+-- help  - Help text to display if player types help [command]
+-- func  - The function used to implement the command
+-- verb  - A list of synonymous verbs the player can type to invoke
+--         the command
 local function add_command(token, help, func, synonyms)
   assert(token)
   assert(func)
