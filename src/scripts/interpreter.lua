@@ -164,7 +164,7 @@ end
 
 -- Prompts the player for input and interpets the command
 -- Returns 1 if successful or nil
-local function run()
+local function interpret_input()
   local s = prompt()
   local cmd = parse(s)
   if cmd then return execute(cmd) end
@@ -173,7 +173,7 @@ end
 local M = {
   add_command = add_command,
   add_word = add_word,
-  run = run,
+  interpret_input = interpret_input,
   parse_object = parse_object,
 }
 

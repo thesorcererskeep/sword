@@ -36,7 +36,7 @@ function main()
   print()
   game.print_room_description(world.player:get_location())
   while true do
-    local turns = interpreter.run()
+    local turns = interpreter.interpret_input()
     if turns ~= nil then
       game.update(turns)
     end
