@@ -5,7 +5,7 @@
 -- Parameters:
 -- room - The room of which to print it's description
 -- full - If true, will print the full description even if it's been visited
-function print_room_description(room, full)
+local function print_room_description(room, full)
   assert(room)
   if type(room) == "string" then
     room = world.get_room(room)
@@ -19,7 +19,11 @@ function print_room_description(room, full)
   end
 end
 
-function update(turns)
+-- Updates the game after player input
+-- Parameters:
+-- turns - Number of turns that have elapsed
+local function update(turns)
+  if turns < 0 then return
   world.player.turns = world.player.turns + turns
 end
 
