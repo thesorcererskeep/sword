@@ -12,7 +12,7 @@ local function prompt()
   while not s do
     s = console.read_line()
     s = s:lower()
-    -- s = s:trim() TODO: fix
+    s = s:trim()
     if not s then
       console.print("Beg your pardon?")
     else

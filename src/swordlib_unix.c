@@ -247,19 +247,19 @@ static int str_trim(lua_State *L) {
       break;
     }
   }
-  if (i >= (length - 1)) {
+  if (i >= length) {
     return 0;
   }
   size_t start = i;
 
   /* Determine where actual characters end */
-  for (i = length; i == 0; i--) {
+  for (i = (length - 1); i >= start; i--) {
     char c = s[i];
     if (!isspace(c)) {
       break;
     }
   }
-  if (i <= (start)) {
+  if (i < start) {
     return 0;
   }
   size_t end = i;
@@ -267,10 +267,10 @@ static int str_trim(lua_State *L) {
   /* Copy contents of s into trimmed string */
   size_t j = 0;
   char trimmed[SWORD_MAX_CHARS];
-  for (i = start; i < end; i++) {
+  for (i = start; i <= end; i++) {
       trimmed[j] = s[i];
       j++;
-      if (j >= SWORD_MAX_CHARS - 1) {
+      if (j >= (SWORD_MAX_CHARS - 1)) {
         break;
       }
   }
