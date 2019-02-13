@@ -15,7 +15,7 @@ end
 
 -- Returns the room the Entity is currently located in
 function Entity:get_location()
-  local room = _rooms[self.location]
+  local room = _rooms[self.__location]
   return room
 end
 
@@ -53,7 +53,7 @@ end
 -- Sets the starting room for the player
 function Start(room)
   assert(room)
-  player.location = room
+  player.__location = room
 end
 
 local M = {
