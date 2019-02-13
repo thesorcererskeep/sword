@@ -7,7 +7,9 @@
 -- full - If true, will print the full description even if it's been visited
 function print_room_description(room, full)
   assert(room)
-  assert(type(room) == "table")
+  if type(room) == "string" then
+    room = world.get_room(room)
+  end
   if full then room.visited = false end
 
   print(room.name)

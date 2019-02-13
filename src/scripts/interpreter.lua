@@ -25,6 +25,9 @@ end
 -- Returns a table or nil
 local function parse(s)
   assert(s)
+  if settings.debug then
+    print("## Parsing \"" .. s .. "\"")
+  end
   local words = s:split()
   if #words < 1 then
     console.print("Beg your pardon?")
@@ -36,15 +39,67 @@ local function parse(s)
   if not entry then
     console.print('I don\'t understand the word "' .. verb ..'."')
     return
+  elseif entry.token == "direction" then
+    table.insert(words, 1, entry.value)
+    entry.token = "walk"
+    entry.value = "walk"
+    verb = "walk"
   elseif entry.token ~= "verb" then
     console.print("Your command must begin with a verb.")
     return
+  end
+
+  if settings.debug then
+    print("## result = {")
+    print("##   token = '" .. entry.value .. "',")
+    print("##   verb = '" .. verb .. "',")
+    print("##   args = {")
+    for _, v in pairs(words) do print("##      '" .. v .. "','") end
+    print("##   }")
+    print("## }")
   end
 
   return {
     token = entry.value,
     verb = verb,
     args = words
+  }
+end
+
+-- Checks a sentence for an object
+-- Parameters:
+-- word - A table containing the words to check
+-- Returns a table containing the object and remaining words in the sentence
+-- or nil if nothing was found.
+-- result = {
+--   object = { adjective, noun }
+--   args = { .. }
+-- }
+local function parse_object(words)
+  assert(words)
+  local object = {}
+  local found = false
+  while not found do
+    local w = table.remove(words, 1)
+    if not w then found = true end
+    local entry = _dictionary[w]
+    if not entry then
+      console.print("I don't understand the word \"" .. w .. ".\"")
+      return
+    elseif entry.toke == "verb" then
+      console.print("I was expecting a noun.")
+      return
+    elseif entry.token == "noun" then
+      found = true
+      object.noun = entry.value
+    elseif entry.token == "direction" then
+      found = true
+      object.noun = entry.value
+    end
+  end
+  return  {
+    object = object,
+    args = args
   }
 end
 
@@ -119,6 +174,7 @@ local M = {
   add_command = add_command,
   add_word = add_word,
   run = run,
+  parse_object = parse_object,
 }
 
 return M

@@ -7,7 +7,6 @@ function do_quit(args)
 end
 interpreter.add_command("quit", "Exits the game.", do_quit, {"q"})
 
--- Skips a turn
 function do_wait(args)
   console.print("Time passes.")
   return 1
@@ -36,4 +35,33 @@ interpreter.add_command(
   "turns",
   "Displays the number of turns you have played.",
   do_turns
+)
+
+-- Moves the player to a new location
+function do_walk(args)
+  local result = interpreter.parse_object(args)
+  if not result then return end
+  local object = result.object
+  if not object or not object.noun then
+    console.print("Which direction would you like to go?")
+    return 0
+  end
+  local direction = object.noun
+  local player = world.player
+  local room = player:get_location()
+  local destination = room.exits[direction]
+  if not destination then
+    console.print("The way is blocked.")
+    return 0
+  else
+    player:set_location(destination)
+    game.print_room_description(destination)
+  end
+  return 1
+end
+interpreter.add_command(
+  "walk",
+  "Move in the specified direction. WALK EAST",
+  do_walk,
+  {"go", "move", "crawl", "run"}
 )
