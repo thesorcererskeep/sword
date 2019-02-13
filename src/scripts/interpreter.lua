@@ -68,6 +68,7 @@ end
 -- verb  - A list of synonymous verbs the player can type to invoke the command
 local function add_command(token, help, func, synonyms)
   assert(token)
+  assert(help)
   assert(func)
   assert(type(func) == "function")
 
