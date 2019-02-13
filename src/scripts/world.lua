@@ -50,7 +50,7 @@ function Room(args)
   _rooms[args.key] = args
 end
 
--- Sets the starting room for the _player
+-- Sets the starting room for the player
 function Start(room)
   assert(room)
   player.location = room
