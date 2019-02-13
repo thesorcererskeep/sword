@@ -89,6 +89,24 @@ local function add_command(token, help, func, synonyms)
   end
 end
 
+-- Adds a word to the interpreter's dictionary
+-- Parameters:
+-- word     - The word to add
+-- type     - One of ignore, noun, direction, adjective, preposition
+-- synonyms - Other words that are synonymous with this one
+local function add_word(word, type, synonyms)
+  assert(word)
+  assert(type)
+  local s = synonyms or {}
+  table.insert(s, 1, word)
+  for _, v in pairs(s) do
+    _dictionary[v] = {
+      token = type,
+      value = word
+    }
+  end
+end
+
 -- Prompts the player for input and interpets the command
 -- Returns 1 if successful or nil
 local function run()
@@ -99,6 +117,7 @@ end
 
 local M = {
   add_command = add_command,
+  add_word = add_word
   run = run,
 }
 
