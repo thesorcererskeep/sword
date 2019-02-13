@@ -19,6 +19,18 @@ function Entity:get_location()
   return room
 end
 
+-- Moves the entity to a room
+-- Parameters:
+-- room - A table or string key of the room to move the entity to
+function Entity:set_location(room)
+  assert(room)
+  if (type(room) == "table") then
+    room = room.key
+  end
+  assert(type(room) == "string")
+  self.__location = room
+end
+
 local player = Entity:new() -- The player's entity
 
 -- Returns a specific room
@@ -53,7 +65,7 @@ end
 -- Sets the starting room for the player
 function Start(room)
   assert(room)
-  player.__location = room
+  player:set_location(room)
 end
 
 local M = {
