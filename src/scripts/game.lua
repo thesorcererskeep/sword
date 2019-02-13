@@ -23,7 +23,7 @@ end
 -- Parameters:
 -- turns - Number of turns that have elapsed
 local function update(turns)
-  if turns < 0 then return
+  if turns < 0 then return end
   world.player.turns = world.player.turns + turns
 end
 
