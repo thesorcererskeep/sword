@@ -10,6 +10,9 @@ function init()
   -- Load in all commands
   dofile("data/scripts/commands.lua")
 
+  -- Load in dictionary
+  dofile("data/scripts/dictionary.lua")
+
   Room{
     key = "cave",
     name = "Cave",
