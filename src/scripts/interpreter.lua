@@ -117,7 +117,7 @@ end
 
 local M = {
   add_command = add_command,
-  add_word = add_word
+  add_word = add_word,
   run = run,
 }
 
