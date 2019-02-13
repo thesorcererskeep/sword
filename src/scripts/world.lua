@@ -31,7 +31,10 @@ function Entity:set_location(room)
   self.__location = room
 end
 
-local player = Entity:new() -- The player's entity
+ -- The player's entity
+local player = Entity:new{
+  turns = 0
+}
 
 -- Returns a specific room
 -- Parameters:

@@ -3,6 +3,7 @@
 
 interpreter = require "interpreter"
 world = require "world"
+game = require "game"
 
 -- Loads in all of the game data
 function init()
@@ -21,11 +22,13 @@ end
 -- Runs the game
 function main()
   init()
-  local room = world.player:get_location()
-  console.print(room.name)
-  console.print(room.description)
+  print()
+  game.print_room_description(world.player:get_location())
   while true do
-    interpreter.run()
+    local turns = interpreter.run()
+    if turns ~= nil then
+      game.update(turns)
+    end
   end
 end
 
