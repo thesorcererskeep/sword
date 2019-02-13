@@ -13,7 +13,15 @@ function init()
   Room{
     key = "cave",
     name = "Cave",
-    description = "You are standing in a damp cave."
+    description = "You are standing in a damp cave. To the south you can see light.",
+    exits = {south = "forest"}
+  }
+
+  Room{
+    key = "forest",
+    name = "Forest",
+    description = "You emerge into a sunny forest. North leads back into the cave.",
+    exits = {north = "cave"}
   }
 
   Start('cave')
