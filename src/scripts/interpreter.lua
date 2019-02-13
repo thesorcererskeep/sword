@@ -12,7 +12,7 @@ local function prompt()
   while not s do
     s = console.read_line()
     s = s:lower()
-    -- s = s:trim() TODO: fix
+    s = s:trim()
     if not s then
       console.print("Beg your pardon?")
     else
@@ -49,7 +49,7 @@ local function parse(s)
 end
 
 -- Executes a command
--- Returns 1 if successful or nil
+-- Returns number of turns passed if successful or nil
 local function execute(command)
   assert(command)
   local token = command.token
