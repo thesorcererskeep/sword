@@ -14,14 +14,14 @@ static void print_version(void);
 static void init(void);
 static void shutdown(void);
 
-int main(int argv, char* argc[]) {
+int main(int argv, char *argc[]) {
+  sw_parse_args(argv, argc);
   print_version();
   init();
   luaL_openlibs(L);
   sw_openlibs(L);
   sw_set_scripts_path(L, SWORD_SCRIPTS_PATH);
-
-  int err = luaL_loadfile(L, "./data/scripts/main.lua") || lua_pcall(L, 0, 0, 0);
+  int err = luaL_loadfile(L, "./data/scripts/sword.lua") || lua_pcall(L, 0, 0, 0);
   if (err) {
      sw_error(L, "%s\n", lua_tostring(L, -1));
   }
@@ -47,5 +47,7 @@ static void init(void) {
 static void shutdown(void) {
   /* Reset title and close down Lua */
   sw_con_set_title("");
-  lua_close(L);
+  if (L != NULL) {
+    lua_close(L);
+  }
 }
