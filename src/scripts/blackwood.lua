@@ -32,4 +32,10 @@ the Town Square.]],
   }
 }
 
+Item{
+  key = "stone",
+  name = "stone",
+  location = "main_ave_south"
+}
+
 Start('town_square')

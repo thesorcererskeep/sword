@@ -65,6 +65,20 @@ function Room(args)
   _rooms[args.key] = args
 end
 
+-- Creates an item
+-- Parameters:
+-- config - A table containing the item's definition
+function Item(config)
+  assert(config)
+  assert(config.key)
+  assert(config.name)
+  assert(config.location)
+  config.description = config.description or
+    "There is nothing special about the " .. config.name .. "."
+  local item = Entity.new(config);
+  _entities[config.key]= item
+end
+
 -- Sets the starting room for the player
 function Start(room)
   assert(room)
