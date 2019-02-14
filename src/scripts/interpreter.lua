@@ -73,9 +73,9 @@ local function parse(s)
   end
 
   return {
-    token = entry.value,
-    verb = verb,
-    args = words
+    token = entry.value, -- The command's token
+    verb = verb, -- The actual string used to invoke the command
+    args = words -- Remaining words after parsing the verb
   }
 end
 
