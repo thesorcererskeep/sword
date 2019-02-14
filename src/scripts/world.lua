@@ -131,6 +131,7 @@ function Item(config)
   assert(config.key)
   assert(config.name)
   assert(config.location)
+  config.type = "item"
   config.description = config.description or
     "There is nothing special about the " .. config.name .. "."
   config.determiner = config.determiner or "a"
