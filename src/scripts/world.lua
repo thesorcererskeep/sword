@@ -90,6 +90,13 @@ end
 -- Creates an item
 -- Parameters:
 -- config - A table containing the item's definition
+--   Fields:
+--     key, string         - The item's unique identifier.
+--     name, string        - The items's displayed name
+--     description, string - The item's description.
+--     determiner          - The word to use when addressing the item.
+--                           e.g. 'a' or 'an'
+--     weight              - Number of inventory slots the item uses.
 function Item(config)
   assert(config)
   assert(config.key)
@@ -98,6 +105,7 @@ function Item(config)
   config.description = config.description or
     "There is nothing special about the " .. config.name .. "."
   config.determiner = config.determiner or "a"
+  config.weight = config.weight or 1
   local item = Entity.new(config);
   _entities[config.key]= item
 end
