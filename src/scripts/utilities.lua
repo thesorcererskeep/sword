@@ -1,7 +1,7 @@
 -- utilities.lua
 -- Miscellanious helper functions
 
-function dump_table (o)
+function dump_table(o)
   local s = ""
    if type(o) == "number" then
      s = s .. o
