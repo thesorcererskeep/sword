@@ -66,6 +66,18 @@ local function get_items_in(room)
   end
 end
 
+-- Writes all of the world data into a string and returns it. The data is
+-- valid Lua code suitable for execution.
+local function serialize()
+  local world_data = {
+    rooms = _rooms,
+    entities = _entities,
+    player = player
+  }
+  local s = "world_data = " .. dump_table(world_data) .. "\n"
+  return s
+end
+
 -- Global convenience function to create a room
 -- Parameters:
 -- args - A table containing the room's definition
@@ -106,7 +118,7 @@ function Item(config)
     "There is nothing special about the " .. config.name .. "."
   config.determiner = config.determiner or "a"
   config.weight = config.weight or 1
-  local item = Entity.new(config);
+  local item = Entity:new(config);
   _entities[config.key]= item
 end
 
@@ -119,6 +131,7 @@ end
 local M = {
   get_room = get_room,
   get_items_in = get_items_in,
+  serialize = serialize,
   player = player
 }
 
