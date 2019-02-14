@@ -78,6 +78,23 @@ local function serialize()
   return s
 end
 
+-- Deserializes the world data and updates the contents of the world.
+-- Parameters:
+-- data - A table containing the world data
+local function deserialize(data)
+  assert(data)
+  assert(data.rooms)
+  assert(data.entities)
+  assert(data.player)
+  _rooms = data.rooms
+  _entities = {}
+  for k, v in pairs(data.entities) do
+    _entities[k] = Entity:new(v)
+  end
+  player = {}
+  player = Entity:new(player.data)
+end
+
 -- Global convenience function to create a room
 -- Parameters:
 -- args - A table containing the room's definition
@@ -132,6 +149,7 @@ local M = {
   get_room = get_room,
   get_items_in = get_items_in,
   serialize = serialize,
+  deserialize = deserialize,
   player = player
 }
 
