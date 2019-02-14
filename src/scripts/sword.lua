@@ -4,6 +4,7 @@
 interpreter = require "interpreter"
 world = require "world"
 game = require "game"
+require "utilities"
 
 -- Loads in all of the game data
 function init()
@@ -15,6 +16,7 @@ function init()
 
   -- Load in blackwood
   dofile("data/scripts/blackwood.lua")
+  
 end
 
 -- Runs the game
