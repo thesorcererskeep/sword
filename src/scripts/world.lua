@@ -55,7 +55,7 @@ local function get_items_in(room)
   end
   local found = {}
   for _, item in pairs(_entities) do
-    if item.location == room.key then
+    if item.location == room.key and item.type == "item" then
       table.insert(found, 1, item)
     end
   end
