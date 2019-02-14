@@ -35,7 +35,20 @@ local function parse(s)
   end
 
   local verb = table.remove(words, 1)
-  local entry = _dictionary[verb]
+  local entry = {}
+  -- Make a copy of the dictionary entry so we don't accidentally overwrite it
+  if _dictionary[verb] then
+    entry.token = _dictionary[verb].token
+    entry.value = _dictionary[verb].value
+  else
+    entry = nil
+  end
+  if settings.debug and entry then
+    print("## entry = {")
+    print("  token = '" .. entry.token .. "'")
+    print("  value = '" .. entry.value .. "'")
+    print("}")
+  end
   if not entry then
     console.print('I don\'t understand the word "' .. verb ..'."')
     return
