@@ -1,5 +1,5 @@
 -- dictionary.lua
--- Adds all non-command related words to the interpreter's _dictionary
+-- Adds all non-command related words to the interpreter's dictionary
 
 -- Movement directions
 interpreter.add_word("north", "direction", {"n"})
