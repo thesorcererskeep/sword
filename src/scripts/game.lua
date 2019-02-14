@@ -1,9 +1,9 @@
 -- game.lua
 -- Gameplay functions
 
--- Prints a description of a room and it's contents
+-- Prints a description of a room and its contents
 -- Parameters:
--- room - The room of which to print it's description
+-- room - The room of which to print its description
 -- full - If true, will print the full description even if it's been visited
 local function print_room_description(room, full)
   assert(room)
