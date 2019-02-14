@@ -17,6 +17,14 @@ local function print_room_description(room, full)
     print(room.description)
     room.visited = true
   end
+
+  -- Print the items in the room
+  local items = world.get_items_in(room)
+  if items then
+    for _, item in pairs(items) do
+      console.print("There is " .. item.determiner .. " " .. item.name .. " here.")
+    end
+  end
 end
 
 -- Updates the game after player input

@@ -40,8 +40,30 @@ local player = Entity:new{
 -- Parameters:
 -- key - The room's unique key
 -- Returns a table
-function get_room(key)
+local function get_room(key)
   return _rooms[key]
+end
+
+-- Returns the items in a room
+-- Parameters:
+-- key - The room's unique key
+-- Returns a table
+local function get_items_in(room)
+  assert(room)
+  if type(room) == "string" then
+    room = _rooms[room]
+  end
+  local found = {}
+  for _, item in pairs(_entities) do
+    if item.location == room.key then
+      table.insert(found, 1, item)
+    end
+  end
+  if #found < 1 then
+    return
+  else
+    return found
+  end
 end
 
 -- Global convenience function to create a room
@@ -75,6 +97,7 @@ function Item(config)
   assert(config.location)
   config.description = config.description or
     "There is nothing special about the " .. config.name .. "."
+  config.determiner = config.determiner or "a"
   local item = Entity.new(config);
   _entities[config.key]= item
 end
@@ -87,6 +110,7 @@ end
 
 local M = {
   get_room = get_room,
+  get_items_in = get_items_in,
   player = player
 }
 
