@@ -74,7 +74,7 @@ function do_save(args)
     console.print("Filename:")
     local s = interpreter.prompt()
     if not s then
-      console.print("Errror: No output filename.")
+      console.print("Error: No output filename.")
       return
     else
       words[1] = s
@@ -90,9 +90,17 @@ function do_save(args)
   local data = world.serialize()
   local path = "./" .. filename
   local f = io.open(path, "w")
+  if not f then
+    console.print("Error: Unable to open save \"" .. filename .. "\"")
+    return
+  end
   f:write(data)
+  if not f then
+    console.print("Error: Unable to write save \"" .. filename .. "\"")
+    return
   f:close()
   console.print('"'.. filename .. '" saved.')
+  return 0
 end
 interpreter.add_command(
   "save",
