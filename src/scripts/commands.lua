@@ -98,6 +98,7 @@ function do_save(args)
   if not f then
     console.print("Error: Unable to write save \"" .. filename .. "\"")
     return
+  end
   f:close()
   console.print('"'.. filename .. '" saved.')
   return 0
@@ -106,4 +107,39 @@ interpreter.add_command(
   "save",
   "Saves your progress in the game. Usage: save [filename]",
   do_save
+)
+
+-- Loads a save game file
+function do_load(args)
+  local words = args
+  if not words or #words < 1 then
+    words = {}
+    console.print("Filename:")
+    local s = interpreter.prompt()
+    if not s then
+      console.print("Error: No input filename.")
+      return
+    else
+      words[1] = s
+    end
+  end
+  if #words > 1 then
+    console.print("Warning: Truncating file name.")
+  end
+  local filename = words[1]
+  local ext = string.sub(filename, string.len(filename) - 3,
+              string.len(filename))
+  if ext ~= ".sav" then filename = filename .. ".sav" end
+  local path = "./" .. filename
+  dofile(path)
+  world.deserialize(world_data)
+  print('"' .. filename .. '" loaded.')
+  game.print_room_description(world.player:get_location(), true)
+  return 0
+end
+interpreter.add_command(
+  "load",
+  "Loads a save game file. Usage: load [filename]",
+  do_load,
+  {"restore"}
 )
