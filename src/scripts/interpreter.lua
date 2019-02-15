@@ -8,7 +8,6 @@ _commands   = {} -- All commands the interpreter knows
 -- Returns a string
 local function prompt()
   local s = nil
-  console.print()
   while not s do
     s = console.read_line()
     s = s:lower()
@@ -179,6 +178,7 @@ end
 -- Returns 1 if successful or nil
 local function interpret_input()
   local s = prompt()
+  console.print()
   local cmd = parse(s)
   if cmd then return execute(cmd) end
 end
@@ -188,6 +188,7 @@ local M = {
   add_word = add_word,
   interpret_input = interpret_input,
   parse_object = parse_object,
+  prompt = prompt,
 }
 
 return M
