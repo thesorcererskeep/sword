@@ -55,7 +55,7 @@ function do_walk(args)
     return 0
   else
     player:set_location(destination)
-    game.print_room_description(destination)
+    game.print_room_description(destinations)
   end
   return 1
 end
@@ -64,4 +64,38 @@ interpreter.add_command(
   "Move in the specified direction. WALK EAST",
   do_walk,
   {"go", "move", "crawl", "run"}
+)
+
+-- Saves the game
+function do_save(args)
+  local words = args
+  if not words or #words < 1 then
+    words = {}
+    console.print("Filename:")
+    local s = interpreter.prompt()
+    if not s then
+      console.print("Errror: No output filename.")
+      return
+    else
+      words[1] = s
+    end
+  end
+  if #words > 1 then
+    console.print("Warning: Truncating file name.")
+  end
+  local filename = words[1]
+  local ext = string.sub(filename, string.len(filename) - 3,
+              string.len(filename))
+  if ext ~= ".sav" then filename = filename .. ".sav" end
+  local data = world.serialize()
+  local path = "./" .. filename
+  local f = io.open(path, "w")
+  f:write(data)
+  f:close()
+  console.print('"'.. filename .. '" saved.')
+end
+interpreter.add_command(
+  "save",
+  "Saves your progress in the game. Usage: save [filename]",
+  do_save
 )
