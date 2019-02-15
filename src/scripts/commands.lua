@@ -49,13 +49,16 @@ function do_walk(args)
   local direction = object.noun
   local player = world.player
   local room = player:get_location()
+  print("## room = " .. tostring(room))
   local destination = room.exits[direction]
+  print("## dir = " .. tostring(direction))
+  print("## dest = " .. tostring(destination))
   if not destination then
     console.print("The way is blocked.")
     return 0
   else
     player:set_location(destination)
-    game.print_room_description(destinations)
+    game.print_room_description(destination)
   end
   return 1
 end
@@ -131,9 +134,14 @@ function do_load(args)
               string.len(filename))
   if ext ~= ".sav" then filename = filename .. ".sav" end
   local path = "./" .. filename
-  dofile(path)
+  local f = loadfile(path)
+  if not f then
+    console.print("Error: Unable to read save \"" .. filename .. "\"")
+  end
+  f();
   world.deserialize(world_data)
-  print('"' .. filename .. '" loaded.')
+  console.print('"' .. filename .. '" loaded.')
+  console.print()
   game.print_room_description(world.player:get_location(), true)
   return 0
 end

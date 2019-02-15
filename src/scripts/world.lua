@@ -33,7 +33,8 @@ end
 
  -- The player's entity
 local player = Entity:new{
-  turns = 0
+  turns = 0,
+  __location = "nowhere",
 }
 
 -- Returns a specific room
@@ -86,13 +87,18 @@ local function deserialize(data)
   assert(data.rooms)
   assert(data.entities)
   assert(data.player)
-  _rooms = data.rooms
-  _entities = {}
+  world._rooms = data.rooms
+  world._entities = {}
   for k, v in pairs(data.entities) do
-    _entities[k] = Entity:new(v)
+    world._entities[k] = Entity:new(v)
   end
-  player = {}
-  player = Entity:new(player.data)
+  world.player = {}
+  world.player = Entity:new(data.player)
+  if settings.debug then
+    print("## player data = " .. dump_table(data.player))
+    print("## player = " .. dump_table(player))
+  end
+  world_data = nil
 end
 
 -- Global convenience function to create a room
@@ -137,7 +143,7 @@ function Item(config)
   config.determiner = config.determiner or "a"
   config.weight = config.weight or 1
   local item = Entity:new(config);
-  _entities[config.key]= item
+  _entities[config.key] = item
 end
 
 -- Sets the starting room for the player
