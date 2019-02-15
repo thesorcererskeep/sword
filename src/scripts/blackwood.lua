@@ -11,9 +11,9 @@ Main Avenue. To the south is the Town Hall. There is also a Chapel to the east
 and the Bank is west.]],
   exits = {
     north = "main_ave_south",
-    south = "town_hall",
-    east = "chapel",
-    west = "bank"
+--    south = "town_hall",
+--    east = "chapel",
+--    west = "bank"
   }
 }
 
@@ -25,10 +25,10 @@ Room{
 side and a Blacksmith on the east. The avenue continues to the north. South is
 the Town Square.]],
   exits = {
-    north = "main_ave_north",
+--    north = "main_ave_north",
     south = "town_square",
-    east = "blacksmith",
-    west = "general_store"
+--    east = "blacksmith",
+--    west = "general_store"
   }
 }
 
