@@ -46,7 +46,6 @@ static void init(void) {
   char* home = getenv("HOME");
   char p[SWORD_MAX_CHARS];
   snprintf(p, SWORD_MAX_CHARS, "%s%s", home, SWORD_PATH_SAVE);
-  printf("resolved p = %s\n", p);
   strncpy(settings.path_save, p, SWORD_MAX_CHARS);
   sw_set_settings(&settings);
 
