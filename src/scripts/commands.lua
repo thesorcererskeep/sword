@@ -49,10 +49,7 @@ function do_walk(args)
   local direction = object.noun
   local player = world.player
   local room = player:get_location()
-  print("## room = " .. tostring(room))
   local destination = room.exits[direction]
-  print("## dir = " .. tostring(direction))
-  print("## dest = " .. tostring(destination))
   if not destination then
     console.print("The way is blocked.")
     return 0
