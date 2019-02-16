@@ -194,8 +194,8 @@ end
 -- Prompts the player for input and interpets the command
 -- Returns 1 if successful or nil
 local function interpret_input()
-  local s = prompt()
   console.print()
+  local s = prompt()
   local cmd = parse(s)
   if cmd then return execute(cmd) end
 end
