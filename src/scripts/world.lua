@@ -163,6 +163,12 @@ function Item(config)
     "There is nothing special about the " .. config.name .. "."
   config.determiner = config.determiner or "a"
   config.weight = config.weight or 1
+
+  -- Add words to the interpreter dictionary
+  for _, v in pairs(config.nouns) do
+    interpreter.add_word("v", "noun")
+  end
+  
   local item = Entity:new(config);
   _entities[config.key] = item
 end
