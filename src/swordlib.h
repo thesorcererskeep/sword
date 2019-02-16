@@ -6,10 +6,16 @@
 #define SWORD_PROMPT ">"
 #define SWORD_DELIMITERS " \r\n\t"
 #define SWORD_MAX_CHARS 2048
-#define SWORD_SCRIPTS_PATH ";./data/?.lua;./data/scripts/?.lua"
+#define SWORD_PATH_INCLUDE ";./data/?.lua;./data/scripts/?.lua"
+#define SWORD_PATH_GAME "./data/"
+#define SWORD_PATH_SCRIPTS "scripts/"
+#define SWORD_SCRIPT_MAIN "main.lua"
+#define SWORD_PATH_SAVE "/.sword/save/"
 
 typedef struct _sword_settings_t {
   bool debug;
+  char path_scripts[SWORD_MAX_CHARS];
+  char path_save[SWORD_MAX_CHARS];
 } sword_settings_t;
 
 /**

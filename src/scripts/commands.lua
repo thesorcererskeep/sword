@@ -88,7 +88,7 @@ function do_save(args)
               string.len(filename))
   if ext ~= ".sav" then filename = filename .. ".sav" end
   local data = world.serialize()
-  local path = "./" .. filename
+  local path = settings.path_save .. filename
   local f = io.open(path, "w")
   if not f then
     console.print("Error: Unable to open save \"" .. filename .. "\"")
@@ -130,10 +130,11 @@ function do_load(args)
   local ext = string.sub(filename, string.len(filename) - 3,
               string.len(filename))
   if ext ~= ".sav" then filename = filename .. ".sav" end
-  local path = "./" .. filename
+  local path = settings.path_save .. filename
   local f = loadfile(path)
   if not f then
     console.print("Error: Unable to read save \"" .. filename .. "\"")
+    return
   end
   f();
   world.deserialize(world_data)

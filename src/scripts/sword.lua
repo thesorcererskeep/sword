@@ -8,15 +8,20 @@ require "utilities"
 
 -- Loads in all of the game data
 function init()
+  if settings.debug then
+    print("## settings = {")
+    print("## " .. dump_table(settings))
+    print("## }")
+  end
   -- Load in all commands
-  dofile("data/scripts/commands.lua")
+  local path = settings.path_scripts
+  dofile(path .. "commands.lua")
 
   -- Load in dictionary
-  dofile("data/scripts/dictionary.lua")
+  dofile(path .. "dictionary.lua")
 
   -- Load in blackwood
-  dofile("data/scripts/blackwood.lua")
-  
+  dofile(path .. "blackwood.lua")
 end
 
 -- Runs the game
