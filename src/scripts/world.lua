@@ -67,6 +67,26 @@ local function get_items_in(room)
   end
 end
 
+-- Finds all of the entities matching the parameters
+-- Parameters:
+-- noun         - The name of the item
+-- adjective    - Any words used to describe the item
+-- location     - Room where the item is located. Acts as a filter
+-- in_inventory - If true also searches the player's inventory
+-- Returns a list of the items found, sorted by score, or nil
+local function find_entities(noun, adjective, location, in_inventory)
+  local found = {}
+  for _, entity in pairs(_entities) do
+    for _, n in entity.nouns do
+      if noun == n then
+        table.insert({item = entity, score = 10})
+      end
+    end
+  end
+  if #found < 1 then return end
+  return found
+end
+
 -- Writes all of the world data into a string and returns it. The data is
 -- valid Lua code suitable for execution.
 local function serialize()
@@ -136,6 +156,7 @@ function Item(config)
   assert(config)
   assert(config.key)
   assert(config.name)
+  assert(config.nouns)
   assert(config.location)
   config.type = "item"
   config.description = config.description or
@@ -157,6 +178,7 @@ local M = {
   get_items_in = get_items_in,
   serialize = serialize,
   deserialize = deserialize,
+  find_entities = find_entities,
   player = player
 }
 
