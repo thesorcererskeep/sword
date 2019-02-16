@@ -166,9 +166,9 @@ function Item(config)
 
   -- Add words to the interpreter dictionary
   for _, v in pairs(config.nouns) do
-    interpreter.add_word("v", "noun")
+    interpreter.add_word(v, "noun")
   end
-  
+
   local item = Entity:new(config);
   _entities[config.key] = item
 end
