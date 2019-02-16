@@ -132,14 +132,14 @@ end
 --                           room before
 --     exits, table        - A list of exits from the room and their
 --                           connections. Example: {'east' = 'dark_cave'}
-function Room(args)
-  assert(args)
-  assert(args.key)
-  assert(args.name)
-  assert(args.description)
-  args.visited = args.visited or false
-  args.exits = args.exits or {}
-  _rooms[args.key] = args
+function Room(config)
+  assert(config)
+  assert(config.key)
+  assert(config.name)
+  assert(config.description)
+  config.visited = config.visited or false
+  config.exits = config.exits or {}
+  _rooms[config.key] = config
 end
 
 -- Creates an item
