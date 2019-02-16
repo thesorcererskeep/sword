@@ -127,6 +127,23 @@ local function execute(command)
   return _commands[token].func(command.args)
 end
 
+-- Returns a sorted list of all commands
+local function list_commands()
+  local keywords = {}
+  for k, _ in pairs(_commands) do table.insert(keywords, 1, k) end
+  table.sort(keywords)
+  return keywords
+end
+
+-- Prints the help message for a specific command
+local function print_help(command)
+  if not _dictionary[command] then
+    console.print("That is not a command I understand.")
+  else
+    console.print(_commands[_dictionary[command].value].help)
+  end
+end
+
 -- Adds a command to the interpreter
 -- Parameters:
 -- token - The name of the command
@@ -189,6 +206,8 @@ local M = {
   interpret_input = interpret_input,
   parse_object = parse_object,
   prompt = prompt,
+  list_commands = list_commands,
+  print_help = print_help
 }
 
 return M

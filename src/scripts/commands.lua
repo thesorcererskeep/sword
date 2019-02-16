@@ -64,7 +64,7 @@ function do_walk(args)
 end
 interpreter.add_command(
   "walk",
-  "Move in the specified direction. WALK EAST",
+  "Move in the specified direction. E.g. WALK EAST",
   do_walk,
   {"go", "move", "crawl", "run"}
 )
@@ -108,7 +108,7 @@ function do_save(args)
 end
 interpreter.add_command(
   "save",
-  "Saves your progress in the game. Usage: save [filename]",
+  "Saves your progress in the game. Usage: SAVE [FILE]",
   do_save
 )
 
@@ -147,7 +147,31 @@ function do_load(args)
 end
 interpreter.add_command(
   "load",
-  "Loads a save game file. Usage: load [filename]",
+  "Loads a save game file. Usage: LOAD [FILE]",
   do_load,
   {"restore"}
+)
+
+-- Loads a save game file
+function do_help(args)
+  local words = args
+  if not words or #words < 1 then
+    local keywords = interpreter.list_commands()
+    local s = ""
+    for _, v in pairs(keywords) do s = s .. "\t" .. v end
+    console.print("I understand the following commands:")
+    console.print(s)
+    console.print("Type HELP [COMMAND] for more.")
+  else
+    interpreter.print_help(words[1])
+  end
+  return 0
+end
+interpreter.add_command(
+  "help",
+[[Invokes the game's help text. Usage: HELP [*COMMAND]\n /
+Typing help will display a list of all commands. Specifying and optional
+command will display the help text for that specific command.]],
+  do_help,
+  {"?"}
 )
