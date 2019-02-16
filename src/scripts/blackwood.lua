@@ -35,6 +35,7 @@ the Town Square.]],
 Item{
   key = "stone",
   name = "stone",
+  nouns = {"stone", "rock", "pebble"},
   location = "main_ave_south"
 }
 
