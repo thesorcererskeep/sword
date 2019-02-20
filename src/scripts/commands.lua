@@ -167,9 +167,39 @@ function do_help(args)
 end
 interpreter.add_command(
   "help",
-[[Invokes the game's help text. Usage: HELP [*COMMAND]\n /
+[[Invokes the game's help text. Usage: HELP [*COMMAND]\n
 Typing help will display a list of all commands. Specifying and optional
 command will display the help text for that specific command.]],
   do_help,
   {"?"}
+)
+
+-- Prints an entity's description
+function do_examine(args)
+  local result = interpreter.parse_object(args)
+  if not result then return end
+  local object = result.object
+  if not object or not object.noun then
+    console.print("What would you like to examine?")
+    s = interpreter.prompt()
+    local w = s:split()
+    result = interpreter.parse_object(w)
+    if not result then
+      console.print("I don't understand what you are trying to do.")
+      return 0
+    end
+  end
+  local entity = world.find_entities(result.object.noun, nil, world.player:get_location())
+  if not entity or #entity < 1 then
+    console.print("You don't see any " .. result.object.noun .. " here.")
+  else
+    console.print(entity[1].item.description)
+  end
+  return 1
+end
+interpreter.add_command(
+  "examine",
+  "Takes a closer look at an item or person. E.g. EXAMINE SWORD",
+  do_examine,
+  {"x"}
 )
