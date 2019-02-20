@@ -232,7 +232,7 @@ interpreter.add_command(
   "take",
   "Picks up an item. E.g. TAKE COIN",
   do_take,
-  {""}
+  {"t", "get", "pick"}
 )
 
 -- Lists all of the items the player is carrying
