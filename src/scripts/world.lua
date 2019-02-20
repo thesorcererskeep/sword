@@ -79,15 +79,28 @@ end
 -- in_inventory - If true also searches the player's inventory
 -- Returns a list of the items found, sorted by score, or nil
 local function find_entities(noun, adjective, location, in_inventory)
+  if type(location) == "string" then
+    location = _rooms[location]
+  end
   local found = {}
   for _, entity in pairs(_entities) do
-    for _, n in entity.nouns do
+    for _, n in pairs(entity.nouns) do
       if noun == n then
-        table.insert({item = entity, score = 10})
+        if location then
+          local r = entity:get_location();
+          if  r.key == location.key then
+            table.insert(found, 1, {item = entity, score = 10})
+          end
+        else
+          table.insert(found, 1, {item = entity, score = 10})
+        end
       end
     end
   end
   if #found < 1 then return end
+  if settings.debug then
+    print("## found = " .. dump_table(found))
+  end
   return found
 end
 
