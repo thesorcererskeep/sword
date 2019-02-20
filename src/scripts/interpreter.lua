@@ -88,7 +88,7 @@ end
 --   args = { .. }
 -- }
 local function parse_object(words)
-  assert(words)
+  if not words or #words < 1 then return end
   local object = {}
   local found = false
   while not found do
@@ -108,6 +108,12 @@ local function parse_object(words)
       found = true
       object.noun = entry.value
     end
+  end
+  if settings.debug then
+    print("## result = {")
+    print("##   object = " .. dump_table(object))
+    print("##   args = " .. dump_table(args))
+    print("## }")
   end
   return  {
     object = object,
