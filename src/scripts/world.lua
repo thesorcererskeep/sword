@@ -8,6 +8,10 @@ local _entities = {} -- Table of all entites in the game
 Entity = {}
 function Entity:new(o)
   o = o or {}
+  if o.location then
+    o.__location = o.location
+    o.location = nil
+  end
   setmetatable(o, self)
   self.__index = self
   return o
