@@ -12,6 +12,7 @@ function Entity:new(o)
     o.__location = o.location
     o.location = nil
   end
+  o.nouns = o.nouns or { "" }
   setmetatable(o, self)
   self.__index = self
   return o
@@ -44,6 +45,7 @@ local player = Entity:new{
   turns = 0,
   __location = "nowhere",
 }
+_entities['player'] = player
 
 -- Returns a specific room
 -- Parameters:
@@ -64,7 +66,29 @@ local function get_items_in(room)
   end
   local found = {}
   for _, item in pairs(_entities) do
-    if item.location == room.key and item.type == "item" then
+    if item:get_location() == room and item.type == "item" then
+      table.insert(found, 1, item)
+    end
+  end
+  if #found < 1 then
+    return
+  else
+    return found
+  end
+end
+
+-- Returns the items in a character's inventory
+-- Parameters:
+-- key - The room's unique key
+-- Returns a table
+local function get_inventory(entity)
+  assert(entity)
+  if type(entity) == "string" then
+    entity = _entities[entity]
+  end
+  local found = {}
+  for _, item in pairs(_entities) do
+    if item:get_location() == entity and item.type == "item" then
       table.insert(found, 1, item)
     end
   end
@@ -203,6 +227,7 @@ end
 local M = {
   get_room = get_room,
   get_items_in = get_items_in,
+  get_inventory = get_inventory,
   serialize = serialize,
   deserialize = deserialize,
   find_entities = find_entities,

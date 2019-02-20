@@ -234,3 +234,23 @@ interpreter.add_command(
   do_take,
   {""}
 )
+
+-- Lists all of the items the player is carrying
+function do_inventory(args)
+  local items = world.get_inventory(world.player)
+  if not items or #items < 1 then
+    console.print("You are carrying nothing.")
+    return 0
+  end
+  console.print("You are carrying:")
+  for _, i in pairs(items) do
+    console.print("  " .. i.determiner .. " " .. i.name)
+  end
+  return 0
+end
+interpreter.add_command(
+  "inventory",
+  "Lists everything you are carrying.",
+  do_inventory,
+  {"i"}
+)
