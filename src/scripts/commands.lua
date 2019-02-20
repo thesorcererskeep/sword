@@ -203,3 +203,34 @@ interpreter.add_command(
   do_examine,
   {"x"}
 )
+
+-- Places an item in the player's inventory
+function do_take(args)
+  local result = interpreter.parse_object(args)
+  if not result then return end
+  local object = result.object
+  if not object or not object.noun then
+    console.print("What would you like to take?")
+    s = interpreter.prompt()
+    local w = s:split()
+    result = interpreter.parse_object(w)
+    if not result then
+      console.print("I don't understand what you are trying to do.")
+      return 0
+    end
+  end
+  local entity = world.find_entities(result.object.noun, nil, world.player:get_location())
+  if not entity or #entity < 1 then
+    console.print("You don't see any " .. result.object.noun .. " here.")
+  else
+    entity[1].item:set_location(world.player)
+    print("Taken.")
+  end
+  return 1
+end
+interpreter.add_command(
+  "take",
+  "Picks up an item. E.g. TAKE COIN",
+  do_take,
+  {""}
+)

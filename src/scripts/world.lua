@@ -20,6 +20,9 @@ end
 -- Returns the room the Entity is currently located in
 function Entity:get_location()
   local room = _rooms[self.__location]
+  if not room then
+    room = _entities[self.__location]
+  end
   return room
 end
 
@@ -37,6 +40,7 @@ end
 
  -- The player's entity
 local player = Entity:new{
+  key = "player",
   turns = 0,
   __location = "nowhere",
 }
