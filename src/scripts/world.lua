@@ -100,6 +100,15 @@ local function get_inventory(entity)
   end
 end
 
+-- Sort function for entities
+function _sort_entities(a, b)
+  if a.score > b.score then
+    return true
+  else
+    return false
+  end
+end
+
 -- Finds all of the entities matching the parameters
 -- Parameters:
 -- noun         - The name of the item
@@ -153,10 +162,26 @@ local function find_entities(noun, adjective, location, in_inventory)
     end
   end
   if #found < 1 then return end
+  -- Sort the entities
+  table.sort(found, _sort_entities)
   if settings.debug then
     print("## found = " .. dump_table(found))
   end
   return found
+end
+
+-- Finds the single entity matching the parameters
+-- Parameters:
+-- noun         - The name of the item
+-- adjective    - Any words used to describe the item
+-- location     - Room where the item is located. Acts as a filter
+-- in_inventory - If true also searches the player's inventory
+-- Returns an Entity of nil
+local function find_entity(noun, adjective, location, in_inventory)
+  local found = find_entities(noun, adjective, location, in_inventory)
+  if found then
+    return found[1]
+  end
 end
 
 -- Writes all of the world data into a string and returns it. The data is
@@ -252,6 +277,7 @@ local M = {
   serialize = serialize,
   deserialize = deserialize,
   find_entities = find_entities,
+  find_entity = find_entity,
   player = player
 }
 
