@@ -10,13 +10,15 @@ function dump_table(o)
    elseif type(o) == "table" then
      s = s .. "{ "
      for k,v in pairs(o) do
-       s = s .. k .. " = "
+       s = s .. "['" .. k .. "']" .. " = "
        s = s .. dump_table(v)
        s = s .. ", "
      end
      s = s .. " }"
    elseif type(o) == "boolean" then
      s = s .. tostring(o)
+   elseif type(o) == "function" then
+     -- continue
    elseif not o then
      -- continue
    else

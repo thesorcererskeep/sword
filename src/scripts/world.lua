@@ -1,7 +1,6 @@
 -- world.lua
 -- Manages the game world
 
-local _rooms = {} -- Table of all rooms in game
 local _entities = {} -- Table of all entites in the game
 
 -- Entity encapsulates all game objects
@@ -12,7 +11,10 @@ function Entity:new(o)
     o.__location = o.location
     o.location = nil
   end
-  o.nouns = o.nouns or { "" }
+  if not o.__location then
+    o.__location = "limbo"
+  end
+  o.nouns = o.nouns or { "unnamed entity" }
   setmetatable(o, self)
   self.__index = self
   return o
@@ -20,10 +22,7 @@ end
 
 -- Returns the room the Entity is currently located in
 function Entity:get_location()
-  local room = _rooms[self.__location]
-  if not room then
-    room = _entities[self.__location]
-  end
+  room = _entities[self.__location]
   return room
 end
 
@@ -42,6 +41,7 @@ end
  -- The player's entity
 local player = Entity:new{
   key = "player",
+  name = "player",
   turns = 0,
   __location = "nowhere",
 }
@@ -52,7 +52,8 @@ _entities['player'] = player
 -- key - The room's unique key
 -- Returns a table
 local function get_room(key)
-  return _rooms[key]
+  assert(key)
+  return _entities[key]
 end
 
 -- Returns the items in a room
@@ -62,7 +63,7 @@ end
 local function get_items_in(room)
   assert(room)
   if type(room) == "string" then
-    room = _rooms[room]
+    room = _entities[room]
   end
   local found = {}
   for _, item in pairs(_entities) do
@@ -108,7 +109,7 @@ end
 -- Returns a list of the items found, sorted by score, or nil
 local function find_entities(noun, adjective, location, in_inventory)
   if type(location) == "string" then
-    location = _rooms[location]
+    location = _entities[location]
   end
   local found = {}
   for _, entity in pairs(_entities) do
@@ -135,11 +136,7 @@ end
 -- Writes all of the world data into a string and returns it. The data is
 -- valid Lua code suitable for execution.
 local function serialize()
-  local world_data = {
-    rooms = _rooms,
-    entities = _entities,
-    player = player
-  }
+  local world_data = _entities
   local s = "world_data = " .. dump_table(world_data) .. "\n"
   return s
 end
@@ -149,20 +146,17 @@ end
 -- data - A table containing the world data
 local function deserialize(data)
   assert(data)
-  assert(data.rooms)
-  assert(data.entities)
-  assert(data.player)
-  world._rooms = data.rooms
-  world._entities = {}
-  for k, v in pairs(data.entities) do
-    world._entities[k] = Entity:new(v)
+  _entities = {}
+  for k, v in pairs(data) do
+    _entities[k] = Entity:new(v)
   end
   world.player = {}
-  world.player = Entity:new(data.player)
+  world.player = _entities["player"]
   if settings.debug then
     print("## player data = " .. dump_table(data.player))
     print("## player = " .. dump_table(player))
   end
+  data = nil
   world_data = nil
 end
 
@@ -184,7 +178,8 @@ function Room(config)
   assert(config.description)
   config.visited = config.visited or false
   config.exits = config.exits or {}
-  _rooms[config.key] = config
+  local r = Entity:new(config)
+  _entities[r.key] = r
 end
 
 -- Creates an item

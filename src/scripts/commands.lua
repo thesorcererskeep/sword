@@ -131,7 +131,10 @@ function do_load(args)
               string.len(filename))
   if ext ~= ".sav" then filename = filename .. ".sav" end
   local path = settings.path_save .. filename
-  local f = loadfile(path)
+  local f, e = loadfile(path)
+  if settings.debug then
+    if e then print("## Script Error: " .. e) end
+  end
   if not f then
     console.print("Error: Unable to read save \"" .. filename .. "\"")
     return

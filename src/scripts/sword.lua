@@ -15,6 +15,7 @@ function init()
   end
   -- Load in all commands
   local path = settings.path_scripts
+  settings.path_save = "./"
   dofile(path .. "commands.lua")
 
   -- Load in dictionary
