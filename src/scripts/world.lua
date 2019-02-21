@@ -180,7 +180,7 @@ end
 local function find_entity(noun, adjective, location, in_inventory)
   local found = find_entities(noun, adjective, location, in_inventory)
   if found then
-    return found[1]
+    return found[1].item
   end
 end
 

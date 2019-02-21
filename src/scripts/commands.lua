@@ -193,14 +193,14 @@ function do_examine(args)
     end
   end
   local entity =
-    world.find_entities(result.object.noun,
+    world.find_entity(result.object.noun,
                         nil,
                         world.player:get_location(),
                         true)
-  if not entity or #entity < 1 then
+  if not entity then
     console.print("You don't see any " .. result.object.noun .. " here.")
   else
-    console.print(entity[1].item.description)
+    console.print(entity.description)
   end
   return 1
 end
