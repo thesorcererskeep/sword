@@ -111,22 +111,45 @@ local function find_entities(noun, adjective, location, in_inventory)
   if type(location) == "string" then
     location = _entities[location]
   end
+  adjective = adjective or "-"
+  local filters = {}
+  if location then filters[1] = location end
+  if in_inventory then filters[2] = world.player end
+
   local found = {}
   for _, entity in pairs(_entities) do
+    local score = 0
+    local is_here = false
+
+    -- Check for location
+    for _, loc in pairs(filters) do
+      if entity:get_location() == loc then
+        is_here = true
+      end
+    end
+
+    -- Score if matches nouns
     for _, n in pairs(entity.nouns) do
       if noun == n then
-        if location then
-          local r = entity:get_location();
-          if  r.key == location.key then
-            table.insert(found, 1, {item = entity, score = 10})
-          end
-        else
-          table.insert(found, 1, {item = entity, score = 10})
-        end
-        if in_inventory and entity:get_location() == world.player then
-          table.insert(found, 1, {item = entity, score = 10})
-        end
+        score = score + 10
       end
+    end
+
+    -- Score if matches adjective
+    entity.adjectives = entity.adjectives or {}
+    for _, a in pairs(entity.adjectives) do
+      if adjective == a then
+        score = score + 1
+      end
+    end
+
+    -- Only insert items within player's reach
+    if is_here and entity.type ~= "player" and score >= 10 then
+      local item  = {
+        item = entity,
+        score = score
+      }
+      table.insert(found, 1, item)
     end
   end
   if #found < 1 then return end
