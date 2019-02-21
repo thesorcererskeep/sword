@@ -123,6 +123,9 @@ local function find_entities(noun, adjective, location, in_inventory)
         else
           table.insert(found, 1, {item = entity, score = 10})
         end
+        if in_inventory and entity:get_location() == world.player then
+          table.insert(found, 1, {item = entity, score = 10})
+        end
       end
     end
   end
