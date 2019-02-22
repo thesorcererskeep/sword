@@ -93,7 +93,7 @@ local function parse_object(words)
   local found = false
   while not found do
     local w = table.remove(words, 1)
-    if not w then found = true end
+    if not w then found = true; break end
     local entry = _dictionary[w]
     if not entry then
       console.print("I don't understand the word \"" .. w .. ".\"")
