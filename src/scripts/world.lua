@@ -53,7 +53,8 @@ _entities['player'] = player
 -- Returns a table
 local function get_room(key)
   assert(key)
-  return _entities[key]
+  local e = _entities[key]
+  if e.type == "room" then return e end
 end
 
 -- Returns the items in a room
@@ -230,6 +231,7 @@ function Room(config)
   assert(config.key)
   assert(config.name)
   assert(config.description)
+  config.type = "room"
   config.visited = config.visited or false
   config.exits = config.exits or {}
   local r = Entity:new(config)
