@@ -34,8 +34,17 @@ the Town Square.]],
 
 Item{
   key = "stone",
-  name = "stone",
+  name = "red stone",
   nouns = {"stone", "rock", "pebble"},
+  adjectives = {"red"},
+  location = "main_ave_south"
+}
+
+Item{
+  key = "brown_stone",
+  name = "brown stone",
+  nouns = {"stone", "rock", "pebble"},
+  adjectives = {"brown"},
   location = "main_ave_south"
 }
 

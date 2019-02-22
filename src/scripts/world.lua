@@ -138,17 +138,20 @@ local function find_entities(noun, adjective, location, in_inventory)
     end
 
     -- Score if matches nouns
-    for _, n in pairs(entity.nouns) do
-      if noun == n then
-        score = score + 10
+    if entity.nouns then
+      for _, n in pairs(entity.nouns) do
+        if noun == n then
+          score = score + 10
+        end
       end
     end
 
     -- Score if matches adjective
-    entity.adjectives = entity.adjectives or {}
-    for _, a in pairs(entity.adjectives) do
-      if adjective == a then
-        score = score + 1
+    if entity.adjectives then
+      for _, a in pairs(entity.adjectives) do
+        if adjective == a then
+          score = score + 1
+        end
       end
     end
 
@@ -254,10 +257,15 @@ function Item(config)
     "There is nothing special about the " .. config.name .. "."
   config.determiner = config.determiner or "a"
   config.weight = config.weight or 1
+  config.ajectives = config.adjectives or {}
 
   -- Add words to the interpreter dictionary
   for _, v in pairs(config.nouns) do
     interpreter.add_word(v, "noun")
+  end
+
+  for _, v in pairs(config.adjectives) do
+    interpreter.add_word(v, "adjective")
   end
 
   local item = Entity:new(config);

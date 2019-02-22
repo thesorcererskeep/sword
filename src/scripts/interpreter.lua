@@ -98,7 +98,7 @@ local function parse_object(words)
     if not entry then
       console.print("I don't understand the word \"" .. w .. ".\"")
       return
-    elseif entry.toke == "verb" then
+    elseif entry.token == "verb" then
       console.print("I was expecting a noun.")
       return
     elseif entry.token == "noun" then
@@ -107,6 +107,8 @@ local function parse_object(words)
     elseif entry.token == "direction" then
       found = true
       object.noun = entry.value
+    elseif entry.token == "adjective" then
+      object.adjective = entry.value
     end
   end
   if settings.debug then
