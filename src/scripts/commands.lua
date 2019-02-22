@@ -187,16 +187,17 @@ function do_examine(args)
     s = interpreter.prompt()
     local w = s:split()
     result = interpreter.parse_object(w)
+    object = result.object
     if not result then
       console.print("I don't understand what you are trying to do.")
       return 0
     end
   end
-  local entity =
-    world.find_entity(result.object.noun,
-                        nil,
-                        world.player:get_location(),
-                        true)
+  print("## do_examine.object = " .. dump_table(object))
+  local n = object.noun
+  local a = object.adjective
+  local loc = world.player:get_location()
+  local entity = world.find_entity(n, a, loc, true)
   if not entity then
     console.print("You don't see any " .. result.object.noun .. " here.")
   else
@@ -221,12 +222,13 @@ function do_take(args)
     s = interpreter.prompt()
     local w = s:split()
     result = interpreter.parse_object(w)
+    object = result.object
     if not result then
       console.print("I don't understand what you are trying to do.")
       return 0
     end
   end
-  local entity = world.find_entities(result.object.noun, nil, world.player:get_location())
+  local entity = world.find_entities(object.noun, object.adjective, world.player:get_location())
   if not entity or #entity < 1 then
     console.print("You don't see any " .. result.object.noun .. " here.")
   else

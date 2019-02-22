@@ -121,7 +121,7 @@ local function find_entities(noun, adjective, location, in_inventory)
   if type(location) == "string" then
     location = _entities[location]
   end
-  adjective = adjective or "-"
+  local adjective = adjective or "-"
   local filters = {}
   if location then filters[1] = location end
   if in_inventory then filters[2] = world.player end
@@ -149,8 +149,10 @@ local function find_entities(noun, adjective, location, in_inventory)
 
     -- Score if matches adjective
     if entity.adjectives then
+      print("## adj == " .. adjective)
       for _, a in pairs(entity.adjectives) do
         if adjective == a then
+          print("## a = " .. a)
           score = score + 1
         end
       end
@@ -259,7 +261,7 @@ function Item(config)
     "There is nothing special about the " .. config.name .. "."
   config.determiner = config.determiner or "a"
   config.weight = config.weight or 1
-  config.ajectives = config.adjectives or {}
+  config.adjectives = config.adjectives or {}
 
   -- Add words to the interpreter dictionary
   for _, v in pairs(config.nouns) do
