@@ -10,3 +10,6 @@ interpreter.add_word("up", "direction", {"u"})
 interpreter.add_word("down", "direction", {"d"})
 interpreter.add_word("in", "direction")
 interpreter.add_word("out", "direction")
+
+-- Ingored
+interpreter.add_word("a", "ignore", {"the", "an"})
