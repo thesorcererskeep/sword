@@ -244,6 +244,40 @@ interpreter.add_command(
   {"t", "get", "pick"}
 )
 
+-- Places take an item from the player's inventory and places it in the
+-- player's location
+function do_drop(args)
+  local result = interpreter.parse_object(args)
+  if not result then return end
+  local object = result.object
+  if not object or not object.noun then
+    console.print("What would you like to drop?")
+    s = interpreter.prompt()
+    local w = s:split()
+    result = interpreter.parse_object(w)
+    object = result.object
+    if not result then
+      console.print("I don't understand what you are trying to do.")
+      return 0
+    end
+  end
+  local entity = world.find_entities(object.noun, object.adjective, nil, true)
+  if not entity or #entity < 1 then
+    console.print("You don't have any " ..
+                  object.noun .. ".")
+  else
+    entity[1].item:set_location(world.player:get_location())
+    print("Dropped.")
+  end
+  return 1
+end
+interpreter.add_command(
+  "drop",
+  "Drops an item. E.g. DROP COIN",
+  do_drop,
+  {"p", "put", "throw"}
+)
+
 -- Lists all of the items the player is carrying
 function do_inventory(args)
   local items = world.get_inventory(world.player)
