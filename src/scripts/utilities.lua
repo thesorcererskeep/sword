@@ -26,3 +26,18 @@ function dump_table(o)
    end
    return s
 end
+
+-- Tests if a file exist. Returns true if it does.
+function file_exists(filename)
+   local f=io.open(filename,"w")
+   if f ~= nil then
+     io.close(f)
+     return true
+   else
+     return false
+   end
+end
+
+fs = {
+  file_exists = file_exists,
+}
