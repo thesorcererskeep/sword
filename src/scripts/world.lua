@@ -12,7 +12,7 @@ function Entity:new(o)
     o.location = nil
   end
   if not o.__location then
-    o.__location = "limbo"
+    o.__location = "nowhere"
   end
   o.nouns = o.nouns or { "unnamed entity" }
   setmetatable(o, self)
