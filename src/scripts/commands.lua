@@ -180,23 +180,19 @@ command will display the help text for that specific command.]],
 
 -- Prints an entity's description
 function do_examine(args)
-  local result = interpreter.parse_object(args)
-  local object = {}
-  if result then object = result.object end
-  if not object or not object.noun then
-    result = interpreter.prompt_for_object("What would you like to examine?")
-    if result then
-      object = result.object
-    else
-      return
-    end
-  end
+  local object = interpreter.require_object(args, "What would you like to examine?")
+  if not object then return end
+  print("## object = " .. dump_table(object))
   local n = object.noun
+  if (interpreter.is_direction(n)) then
+    console.print("I don't understand what you are trying to do.")
+    return
+  end
   local a = object.adjective
   local loc = world.player:get_location()
   local entity = world.find_entity(n, a, loc, true)
   if not entity then
-    console.print("You don't see any " .. result.object.noun .. " here.")
+    console.print("You don't see any " .. object.noun .. " here.")
   else
     console.print(entity.description)
   end
