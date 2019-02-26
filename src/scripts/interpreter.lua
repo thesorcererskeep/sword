@@ -109,6 +109,10 @@ local function parse_object(words)
       object.noun = entry.value
     elseif entry.token == "adjective" then
       object.adjective = entry.value
+    elseif entry.token == "ignore" then
+      -- skip it
+    else:
+      error("Invalid string in interpreter.parse_object().")
     end
   end
   if settings.debug then
