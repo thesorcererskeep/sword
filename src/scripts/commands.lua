@@ -89,6 +89,12 @@ function do_save(args)
   if ext ~= ".sav" then filename = filename .. ".sav" end
   local data = world.serialize()
   local path = settings.path_save .. filename
+  if fs.file_exists(path) then
+    console.print("Save file exists. Overwrite? (y/n):")
+    local s = interpreter.prompt()
+    s:lower()
+    if s:sub(1, 1) ~= 'y' then return 0 end
+  end
   local f = io.open(path, "w")
   if not f then
     console.print("Error: Unable to open save \"" .. filename .. "\"")
