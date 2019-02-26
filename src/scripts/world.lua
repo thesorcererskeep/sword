@@ -53,7 +53,7 @@ _entities['player'] = player
 -- Returns a table
 local function get_entity(key)
   assert(key)
-  return = _entities[key]
+  return _entities[key]
 end
 
 -- Returns a specific room
