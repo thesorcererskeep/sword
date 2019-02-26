@@ -193,7 +193,6 @@ function do_examine(args)
       return 0
     end
   end
-  print("## do_examine.object = " .. dump_table(object))
   local n = object.noun
   local a = object.adjective
   local loc = world.player:get_location()

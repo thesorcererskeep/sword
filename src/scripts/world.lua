@@ -149,10 +149,8 @@ local function find_entities(noun, adjective, location, in_inventory)
 
     -- Score if matches adjective
     if entity.adjectives then
-      print("## adj == " .. adjective)
       for _, a in pairs(entity.adjectives) do
         if adjective == a then
-          print("## a = " .. a)
           score = score + 1
         end
       end
