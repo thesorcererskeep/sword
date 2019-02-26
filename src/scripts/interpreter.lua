@@ -111,7 +111,7 @@ local function parse_object(words)
       object.adjective = entry.value
     elseif entry.token == "ignore" then
       -- skip it
-    else:
+    else
       error("Invalid string in interpreter.parse_object().")
     end
   end
@@ -148,11 +148,11 @@ local function list_commands()
 end
 
 -- Prints the help message for a specific command
-local function print_help(command)
+local function get_help(command)
   if not _dictionary[command] then
-    console.print("That is not a command I understand.")
+    return "That is not a command I understand."
   else
-    console.print(_commands[_dictionary[command].value].help)
+    return _commands[_dictionary[command].value].help
   end
 end
 
@@ -219,7 +219,7 @@ local M = {
   parse_object = parse_object,
   prompt = prompt,
   list_commands = list_commands,
-  print_help = print_help
+  get_help = get_help
 }
 
 return M
