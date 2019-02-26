@@ -30,10 +30,7 @@ local function prompt_for_object(message)
   s = prompt()
   local w = s:split()
   result = interpreter.parse_object(w)
-  if not result then
-    console.print("I don't understand what you are trying to do.")
-    return
-  end
+  if not result then return end
   return result
 end
 
@@ -144,6 +141,41 @@ local function parse_object(words)
   }
 end
 
+-- Checks sentence for an object and prompts the player for one if needed.
+-- Parameters:
+-- args    - Table of words to check
+-- message - String to print as user prompt
+-- Returns a table containing the object and remaining words in the sentence
+-- or nil if nothing was found.
+-- result = {
+--   object = { adjective, noun }
+--   args = { .. }
+-- }
+function require_object(args, message)
+  local result = parse_object(args)
+  local object = {}
+  if result then object = result.object end
+  if not object or not object.noun then
+    result = prompt_for_object(message)
+    if result then
+      object = result.object
+    else
+      return
+    end
+  end
+  return object
+end
+
+-- Returns true if word is an exit direction
+local function is_direction(word)
+  local t = _dictionary[word]
+  if not t or t.token ~= "direction" then
+    return false
+  else
+    return true
+  end
+end
+
 -- Executes a command
 -- Returns number of turns passed if successful or nil
 local function execute(command)
@@ -234,8 +266,10 @@ local M = {
   add_word = add_word,
   interpret_input = interpret_input,
   parse_object = parse_object,
+  require_object = require_object,
   prompt = prompt,
   prompt_for_object = prompt_for_object,
+  is_direction = is_direction,
   list_commands = list_commands,
   get_help = get_help
 }
