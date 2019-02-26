@@ -207,23 +207,19 @@ interpreter.add_command(
 
 -- Places an item in the player's inventory
 function do_take(args)
-  local result = interpreter.parse_object(args)
-  local object = {}
-  if result then object = result.object end
-  if not object or not object.noun then
-    console.print("What would you like to take?")
-    s = interpreter.prompt()
-    local w = s:split()
-    result = interpreter.parse_object(w)
-    object = result.object
-    if not result then
-      console.print("I don't understand what you are trying to do.")
-      return 0
-    end
+  local object = interpreter.require_object(args,
+                                            "What would you like to take?")
+  if not object then return end
+  local n = object.noun
+  if (interpreter.is_direction(n)) then
+    console.print("I don't understand what you are trying to do.")
+    return
   end
-  local entity = world.find_entities(object.noun, object.adjective, world.player:get_location())
+  local a = object.adjective
+  local loc = world.player:get_location()
+  local entity = world.find_entities(n, a, loc)
   if not entity or #entity < 1 then
-    console.print("You don't see any " .. result.object.noun .. " here.")
+    console.print("You don't see any " .. n .. " here.")
   else
     entity[1].item:set_location(world.player)
     print("Taken.")
@@ -240,24 +236,18 @@ interpreter.add_command(
 -- Places take an item from the player's inventory and places it in the
 -- player's location
 function do_drop(args)
-  local result = interpreter.parse_object(args)
-  local object = {}
-  if result then object = result.object end
-  if not object or not object.noun then
-    console.print("What would you like to drop?")
-    s = interpreter.prompt()
-    local w = s:split()
-    result = interpreter.parse_object(w)
-    object = result.object
-    if not result then
-      console.print("I don't understand what you are trying to do.")
-      return 0
-    end
+  local object = interpreter.require_object(args,
+                                            "What would you like to drop?")
+  if not object then return end
+  local n = object.noun
+  if (interpreter.is_direction(n)) then
+    console.print("I don't understand what you are trying to do.")
+    return
   end
-  local entity = world.find_entities(object.noun, object.adjective, nil, true)
+  local a = object.adjective
+  local entity = world.find_entities(n, a, nil, true)
   if not entity or #entity < 1 then
-    console.print("You don't have any " ..
-                  object.noun .. ".")
+    console.print("You don't have any " .. n .. ".")
   else
     entity[1].item:set_location(world.player:get_location())
     print("Dropped.")
