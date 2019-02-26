@@ -228,7 +228,11 @@ function do_take(args)
     console.print("You don't see any " .. n .. " here.")
   else
     entity[1].item:set_location(world.player)
-    print("Taken.")
+    if #entity > 1 then
+      print("You take the " .. entity[1].item.name .. ".")
+    else
+      print("Taken.")
+    end
   end
   return 1
 end
@@ -256,7 +260,11 @@ function do_drop(args)
     console.print("You don't have any " .. n .. ".")
   else
     entity[1].item:set_location(world.player:get_location())
-    print("Dropped.")
+    if #entity > 1 then
+      print("You drop the " .. entity[1].item.name .. ".")
+    else
+      print("Dropped.")
+    end
   end
   return 1
 end
