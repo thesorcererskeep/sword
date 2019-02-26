@@ -180,9 +180,9 @@ command will display the help text for that specific command.]],
 
 -- Prints an entity's description
 function do_examine(args)
-  local object = interpreter.require_object(args, "What would you like to examine?")
+  local object = interpreter.require_object(args,
+                                            "What would you like to examine?")
   if not object then return end
-  print("## object = " .. dump_table(object))
   local n = object.noun
   if (interpreter.is_direction(n)) then
     console.print("I don't understand what you are trying to do.")
