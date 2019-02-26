@@ -47,6 +47,15 @@ local player = Entity:new{
 }
 _entities['player'] = player
 
+-- Returns a specific entity
+-- Parameters:
+-- key - The entity's unique key
+-- Returns a table
+local function get_entity(key)
+  assert(key)
+  return = _entities[key]
+end
+
 -- Returns a specific room
 -- Parameters:
 -- key - The room's unique key
@@ -281,6 +290,7 @@ function Start(room)
 end
 
 local M = {
+  get_entity = get_entity,
   get_room = get_room,
   get_items_in = get_items_in,
   get_inventory = get_inventory,
