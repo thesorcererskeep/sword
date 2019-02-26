@@ -20,6 +20,23 @@ local function prompt()
   end
 end
 
+-- Ask the player to supply an object if one was not given
+-- Parameters:
+-- Prompt messag to print
+-- Returns a table containing the object and any remaining args or nil
+local function prompt_for_object(message)
+  assert(message)
+  console.print(message)
+  s = prompt()
+  local w = s:split()
+  result = interpreter.parse_object(w)
+  if not result then
+    console.print("I don't understand what you are trying to do.")
+    return
+  end
+  return result
+end
+
 -- Parses a string and returns a commands
 -- Returns a table or nil
 local function parse(s)
@@ -218,6 +235,7 @@ local M = {
   interpret_input = interpret_input,
   parse_object = parse_object,
   prompt = prompt,
+  prompt_for_object = prompt_for_object,
   list_commands = list_commands,
   get_help = get_help
 }
