@@ -81,7 +81,7 @@ end
 
 -- Returns the items in a character's inventory
 -- Parameters:
--- key - The room's unique key
+-- entity - The character entity or key
 -- Returns a table
 local function get_inventory(entity)
   assert(entity)
@@ -101,7 +101,7 @@ local function get_inventory(entity)
   end
 end
 
--- Sort function for entities
+-- Sort function for entities. Used by find_entities()
 function _sort_entities(a, b)
   if a.score > b.score then
     return true
