@@ -183,15 +183,13 @@ function do_examine(args)
   local result = interpreter.parse_object(args)
   if not result then return end
   local object = result.object
+  print("## object = " .. dump_table(object))
   if not object or not object.noun then
-    console.print("What would you like to examine?")
-    s = interpreter.prompt()
-    local w = s:split()
-    result = interpreter.parse_object(w)
-    object = result.object
-    if not result then
-      console.print("I don't understand what you are trying to do.")
-      return 0
+    result = interpreter.prompt_for_object("What would you like to examine?")
+    if result then
+      object = result.object
+    else
+      return
     end
   end
   local n = object.noun
