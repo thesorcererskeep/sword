@@ -40,8 +40,8 @@ interpreter.add_command(
 -- Moves the player to a new location
 function do_walk(args)
   local result = interpreter.parse_object(args)
-  if not result then return end
-  local object = result.object
+  local object = {}
+  if result then object = result.object end
   if not object or not object.noun then
     console.print("Which direction would you like to go?")
     return 0
@@ -181,9 +181,8 @@ command will display the help text for that specific command.]],
 -- Prints an entity's description
 function do_examine(args)
   local result = interpreter.parse_object(args)
-  if not result then return end
-  local object = result.object
-  print("## object = " .. dump_table(object))
+  local object = {}
+  if result then object = result.object end
   if not object or not object.noun then
     result = interpreter.prompt_for_object("What would you like to examine?")
     if result then
@@ -213,8 +212,8 @@ interpreter.add_command(
 -- Places an item in the player's inventory
 function do_take(args)
   local result = interpreter.parse_object(args)
-  if not result then return end
-  local object = result.object
+  local object = {}
+  if result then object = result.object end
   if not object or not object.noun then
     console.print("What would you like to take?")
     s = interpreter.prompt()
@@ -246,8 +245,8 @@ interpreter.add_command(
 -- player's location
 function do_drop(args)
   local result = interpreter.parse_object(args)
-  if not result then return end
-  local object = result.object
+  local object = {}
+  if result then object = result.object end
   if not object or not object.noun then
     console.print("What would you like to drop?")
     s = interpreter.prompt()
