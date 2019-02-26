@@ -4,19 +4,25 @@
 interpreter = require "interpreter"
 world = require "world"
 game = require "game"
+require "utilities"
 
 -- Loads in all of the game data
 function init()
+  if settings.debug then
+    print("## settings = {")
+    print("## " .. dump_table(settings))
+    print("## }")
+  end
   -- Load in all commands
-  dofile("data/scripts/commands.lua")
+  local path = settings.path_scripts
+  settings.path_save = "./"
+  dofile(path .. "commands.lua")
 
-  Room{
-    key = "cave",
-    name = "Cave",
-    description = "You are standing in a damp cave."
-  }
+  -- Load in dictionary
+  dofile(path .. "dictionary.lua")
 
-  Start('cave')
+  -- Load in blackwood
+  dofile(path .. "blackwood.lua")
 end
 
 -- Runs the game
@@ -25,7 +31,7 @@ function main()
   print()
   game.print_room_description(world.player:get_location())
   while true do
-    local turns = interpreter.run()
+    local turns = interpreter.interpret_input()
     if turns ~= nil then
       game.update(turns)
     end

@@ -62,6 +62,10 @@ int sw_openlibs(lua_State *L) {
     lua_pushboolean(L, 0);
   }
   lua_setfield(L, -2, "debug");
+  lua_pushstring(L, _settings.path_scripts);
+  lua_setfield(L, -2, "path_scripts");
+  lua_pushstring(L, _settings.path_save);
+  lua_setfield(L, -2, "path_save");
   lua_setglobal(L, "settings");
 
   /* Load in console library */
