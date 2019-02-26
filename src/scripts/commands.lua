@@ -164,7 +164,8 @@ function do_help(args)
     console.print(s)
     console.print("Type HELP [COMMAND] for more.")
   else
-    interpreter.print_help(words[1])
+    local s = interpreter.get_help(words[1])
+    console.print(s)
   end
   return 0
 end
