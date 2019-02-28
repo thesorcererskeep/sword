@@ -10,6 +10,7 @@
 #define SWORD_PATH_GAME "./data/"
 #define SWORD_PATH_SCRIPTS "scripts/"
 #define SWORD_SCRIPT_MAIN "main.lua"
+#define SWORD_PATH_USER "/.sword"
 #define SWORD_PATH_SAVE "/.sword/save/"
 
 typedef struct _sword_settings_t {
@@ -52,5 +53,10 @@ void sw_set_settings(const sword_settings_t *p_settings);
  * Parses command line args
  */
 void sw_parse_args(int argc, char *argv[]);
+
+/**
+ * Creates .sword directory if it doesn't exists
+ */
+ void sw_create_user_dir(void);
 
 #endif /* SWORDLIB_H */

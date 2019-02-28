@@ -49,6 +49,9 @@ static void init(void) {
   strncpy(settings.path_save, p, SWORD_MAX_CHARS);
   sw_set_settings(&settings);
 
+  /* Create user directories */
+  sw_create_user_dir();
+
   /* Initialize  Lua */
   L = luaL_newstate();
 

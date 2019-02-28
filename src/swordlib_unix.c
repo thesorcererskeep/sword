@@ -1,11 +1,13 @@
 #include <assert.h>
 #include <ctype.h>
+#include <errno.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include <readline/readline.h>
+#include <sys/stat.h>
 #include <unistd.h>
 
 #include "lua.h"
@@ -282,3 +284,21 @@ static int str_trim(lua_State *L) {
   lua_pushstring(L, trimmed);
   return 1;
 }
+
+ void sw_create_user_dir(void) {
+   char user_dir[SWORD_MAX_CHARS];
+   char save_dir[SWORD_MAX_CHARS];
+   char* home = getenv("HOME");
+   snprintf(user_dir, SWORD_MAX_CHARS, "%s%s", home, SWORD_PATH_USER);
+   snprintf(save_dir, SWORD_MAX_CHARS, "%s%s", home, SWORD_PATH_SAVE);
+   printf("%s\n", save_dir);
+   int err = mkdir(user_dir, S_IRWXU | S_IRWXG | S_IRWXO);
+   if ((err == -1) && (errno != EEXIST)) {
+     printf("Warning: Unable to create user directory.\n");
+     return;
+   }
+   err = mkdir(save_dir, S_IRWXU | S_IRWXG | S_IRWXO);
+   if ((err == -1) && (errno != EEXIST)) {
+     printf("Warning: Unable to create user save directory.\n");
+   }
+ }
