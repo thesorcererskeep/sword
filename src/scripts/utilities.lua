@@ -29,7 +29,7 @@ end
 
 -- Tests if a file exist. Returns true if it does.
 function file_exists(filename)
-   local f=io.open(filename,"w")
+   local f=io.open(filename,"r")
    if f ~= nil then
      io.close(f)
      return true
