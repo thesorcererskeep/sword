@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <sys/ioctl.h>
+#include <unistd.h>
+
 /* Splits a string into lines every [width] characters. */
 void format_string(char *s, const int width) {
   size_t len = strlen(s);
@@ -28,8 +31,14 @@ void format_string(char *s, const int width) {
 char foo[] = "Mary had a little lamb\nwho's fleece was whittle as a piddle, and every where that Mary went this lamb was sure to go.";
 
 int main(void) {
+  /* Get terminal width */
+  struct ttysize ts;
+  ioctl(STDIN_FILENO, TIOCGSIZE, &ts);
+  int  cols = ts.ts_cols;
+  printf("Cols: %d\n", cols);
+
   printf("Original: \n%s\n", foo);
-  format_string(foo, 79);
+  format_string(foo, cols - 1);
   printf("Formatted:\n%s\n", foo);
   return 0;
 }
