@@ -6,9 +6,9 @@ Room{
   name = "Blackwood Town Square",
   description =
 [[You are standing in the heart of blackwood where the hustle and bustle of
-everyday activity is all around you. Just north of you the square opens up into
-Main Avenue. To the south is the Town Hall. There is also a Chapel to the east
-and the Bank is west.]],
+everyday activity is all around you. Just north of you the square opens up
+into Main Avenue. To the south is the Town Hall. There is also a Chapel to
+the east and the Bank is west.]],
   exits = {
     north = "main_ave_south",
 --    south = "town_hall",
