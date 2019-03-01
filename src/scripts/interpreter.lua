@@ -34,19 +34,16 @@ local function prompt_for_object(message)
   return result
 end
 
--- Parses a string and returns a commands
--- Returns a table or nil
-local function parse(s)
-  assert(s)
-  if settings.debug then
-    print("## Parsing \"" .. s .. "\"")
-  end
-  local words = s:split()
-  if #words < 1 then
-    console.print("Beg your pardon?")
-    return
-  end
-
+-- Checks a sentence for a verb
+-- Parameters:
+-- word - A table containing the words to check
+-- Returns a table containing the verb and remaining words in the sentence
+-- or nil if nothing was found.
+-- result = {
+--   verb = "word",
+--   args = { .. }
+-- }
+local function parse_verb(words)
   local verb = table.remove(words, 1)
   local entry = {}
   -- Make a copy of the dictionary entry so we don't accidentally overwrite it
@@ -74,21 +71,9 @@ local function parse(s)
     console.print("Your command must begin with a verb.")
     return
   end
-
-  if settings.debug then
-    print("## result = {")
-    print("##   token = '" .. entry.value .. "',")
-    print("##   verb = '" .. verb .. "',")
-    print("##   args = {")
-    for _, v in pairs(words) do print("##      '" .. v .. "','") end
-    print("##   }")
-    print("## }")
-  end
-
   return {
-    token = entry.value, -- The command's token
-    verb = verb, -- The actual string used to invoke the command
-    args = words -- Remaining words after parsing the verb
+    verb = entry.value,
+    words = words
   }
 end
 
@@ -138,6 +123,42 @@ local function parse_object(words)
   return  {
     object = object,
     args = args
+  }
+end
+
+-- Parses a string and returns a commands
+-- Returns a table or nil
+local function parse(s)
+  assert(s)
+  if settings.debug then
+    print("## Parsing \"" .. s .. "\"")
+  end
+  local words = s:split()
+  if #words < 1 then
+    console.print("Beg your pardon?")
+    return
+  end
+
+  local result = parse_verb(words)
+  if not result then return end
+
+  local token = result.verb
+  words = result.words
+
+  if settings.debug then
+    print("## result = {")
+    print("##   token = '" .. entry.value .. "',")
+    print("##   verb = '" .. verb .. "',")
+    print("##   args = {")
+    for _, v in pairs(words) do print("##      '" .. v .. "','") end
+    print("##   }")
+    print("## }")
+  end
+
+  return {
+    token = token, -- The command's token
+    --verb = verb, -- The actual string used to invoke the command
+    args = words -- Remaining words after parsing the verb
   }
 end
 
