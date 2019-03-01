@@ -12,9 +12,9 @@ local function print_room_description(room, full)
   end
   if full then room.visited = false end
 
-  print(room.name)
+  console.print(room.name)
   if not room.visited then
-    print(room.description)
+    console.print(room.description)
     room.visited = true
   end
 
