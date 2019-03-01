@@ -18,7 +18,8 @@
 
 static sword_settings_t _settings;
 
-static void _con_print_var(lua_State *L, int i);
+static void _str_format(char *s, const int width);
+static void _con_print_var(lua_State *L, int i, char *buf, const size_t len);
 static int con_print(lua_State *L);
 static int con_read_line(lua_State *L);
 static int str_split(lua_State *L);
@@ -120,12 +121,35 @@ void sw_parse_args(int argc, char *argv[]) {
    sw_set_settings(&settings);
 }
 
+/* Splits a string into lines every [width] characters. */
+static void _str_format(char *s, const int width) {
+  size_t len = strlen(s);
+  size_t i = 0;
+  int line_count = 1;
+  while (i <= len) {
+    char c = s[i];
+    if (c == '\n') {
+      line_count = 1;
+    }
+    if (line_count >= width) {
+      while (!isspace(c) && i >= 0) {
+        i--;
+        c = s[i];
+      }
+      s[i] = '\n';
+      line_count = 1;
+    }
+    line_count++;
+    i++;
+  }
+}
+
 /* Prints an appropriate value for the item at index i on the stack */
-static void _con_print_var(lua_State *L, int i) {
+static void _con_print_var(lua_State *L, int i, char *buf, const size_t len) {
   if (lua_isstring(L, i)) {
     const char *s = luaL_checklstring(L, i, NULL);
     if (s != NULL) {
-      printf("%s", s);
+      snprintf(buf, len, "%s", s);
     }
     return;
   }
@@ -133,30 +157,30 @@ static void _con_print_var(lua_State *L, int i) {
   if (lua_isboolean(L, i)) {
     const int boolean = lua_toboolean(L, i);
     if (boolean == 1) {
-      printf("true");
+      snprintf(buf, len, "true");
     } else {
-      printf("false");
+      snprintf(buf, len, "false");
     }
     return;
   }
 
   if (lua_isnil(L, i)) {
-    printf("nil");
+    snprintf(buf, len, "nil");
     return;
   }
 
   if (lua_istable(L, i)) {
-    printf("[table]");
+    snprintf(buf, len, "[table]");
     return;
   }
 
   if (lua_isfunction(L, i)) {
-    printf("[function]");
+    snprintf(buf, len, "[function]");
     return;
   }
 
   if (lua_isthread(L, i)) {
-    printf("[thread]");
+    snprintf(buf, len, "[thread]");
     return;
   }
 }
@@ -171,18 +195,24 @@ static int con_print(lua_State *L) {
   }
 
   /* Print first arg */
-  _con_print_var(L, 1);
+  char out[SWORD_MAX_CHARS] = "";
+  char buf[SWORD_MAX_CHARS] = "";
+  _con_print_var(L, 1, buf, sizeof(buf));
+  strncat(out, buf, sizeof(out) - 1);
 
   /* Space remaining args with tabs */
   if (c > 1) {
     for (int i = 1; i < c; i++) {
       printf("\t");
-      _con_print_var(L, i + 1);
+      memset(buf, 0, sizeof(buf));
+      _con_print_var(L, 1, buf, sizeof(buf));
+      strncat(out, buf, sizeof(out) - strlen(buf) - strlen(out) - 1);
     }
   }
 
   /* Print final newline */
-  printf("\n");
+  _str_format(out, SWORD_DEFAULT_LINE_WIDTH);
+  printf("%s\n", out);
   return 0;
 }
 

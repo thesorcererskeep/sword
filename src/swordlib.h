@@ -6,6 +6,7 @@
 #define SWORD_PROMPT ">"
 #define SWORD_DELIMITERS " \r\n\t"
 #define SWORD_MAX_CHARS 2048
+#define SWORD_DEFAULT_LINE_WIDTH 80
 #define SWORD_PATH_INCLUDE ";./data/?.lua;./data/scripts/?.lua"
 #define SWORD_PATH_GAME "./data/"
 #define SWORD_PATH_SCRIPTS "scripts/"
